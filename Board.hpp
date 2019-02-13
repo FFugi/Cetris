@@ -46,6 +46,22 @@ public:
         return fields.at(coords);
     }
 
+    int checkFullLines() {
+        int lines = 0;
+        for(int y = 0; y < height; y++){
+            bool hasLine = true;
+            for(int x = 0; x < width; x++){
+                if (!getField({x, y})){
+                    hasLine = false;
+                }
+            }
+            if (hasLine){
+                lines++;
+            }
+        }
+        return lines;
+    }
+
     void print() {
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
