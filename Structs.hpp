@@ -20,4 +20,9 @@ struct Coord {
     }
 };
 
+enum class Direction {
+    LEFT,
+    RIGHT
+};
+
 #endif //CETRIS_STRUCTS_HPP

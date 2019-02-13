@@ -11,8 +11,24 @@
 class Shape : public sf::Drawable, public sf::Transformable {
 public:
     Shape() {
+        tiles.push_back({-1, 0});
         tiles.push_back({0, 0});
         tiles.push_back({1, 0});
+        tiles.push_back({2, 0});
+    }
+
+    void rotate(Direction direction) {
+        for (auto &coord : tiles) {
+            Coord newCoord;
+            if (direction == Direction::LEFT){
+                newCoord.x = coord.y;
+                newCoord.y = -coord.x;
+            } else {
+                newCoord.x = -coord.y;
+                newCoord.y = coord.x;
+            }
+            coord = newCoord;
+        }
     }
 
     void setTileSize(unsigned size) {

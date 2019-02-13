@@ -63,6 +63,7 @@ public:
                         shape.slide(1);
                         break;
                     case sf::Keyboard::W:
+                        shape.rotate(Direction::LEFT);
                         break;
                     case sf::Keyboard::S:
                         break;
