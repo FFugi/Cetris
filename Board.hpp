@@ -15,11 +15,11 @@
 
 class Board : public sf::Drawable, public sf::Transformable {
 public:
-    Board(unsigned width, unsigned height) {
+    Board(int width, int height) {
         this->height = height;
         this->width = width;
-        for (unsigned y = 0; y < height; y++) {
-            for (unsigned x = 0; x < width; x++) {
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
                 fields.insert_or_assign({x, y}, false);
             }
         }
@@ -31,7 +31,8 @@ public:
     }
 
     void setField(Coord coords, bool value) {
-        if (coords.x >= width || coords.y >= height) {
+        if (!areCoordsOk(coords)) {
+            std::cout << coords.x <<", "<<coords.y <<std::endl;
             throw std::out_of_range("Width or height is too high!");
         }
         fields.insert_or_assign(coords, value);
@@ -39,15 +40,15 @@ public:
     }
 
     bool getField(Coord coords) {
-        if (coords.x >= width || coords.y >= height) {
+        if (!areCoordsOk(coords)) {
             throw std::out_of_range("Width or height is too high!");
         }
         return fields.at(coords);
     }
 
     void print() {
-        for (unsigned y = 0; y < height; y++) {
-            for (unsigned x = 0; x < width; x++) {
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
                 std::cout << (fields.at({x, y}) ? '#' : '.');
             }
             std::cout << std::endl;
@@ -63,20 +64,25 @@ private:
         sf::RectangleShape rect(sf::Vector2f(size, size));
         rect.setOutlineColor(sf::Color::Red);
         rect.setOutlineThickness(outlineThickness);
-        for (unsigned y = 0; y < height; y++) {
-            for (unsigned x = 0; x < width; x++) {
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
                 if (fields.at({x, y})) {
-                    rect.setPosition(x * tileSize, y * tileSize);
+                    rect.setPosition(x * tileSize + outlineThickness, y * tileSize + outlineThickness);
                     target.draw(rect, states);
                 }
             }
         }
     }
 
+    bool areCoordsOk(Coord coords) {
+        return coords.x < width && coords.y < height && coords.x >= 0 && coords.y >= 0;
+    }
+
+
     unsigned tileSize = 30;
     unsigned outlineThickness = 4;
-    unsigned width;
-    unsigned height;
+    int width;
+    int height;
     std::map<Coord, bool> fields;
 };
 

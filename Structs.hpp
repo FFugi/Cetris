@@ -6,8 +6,8 @@
 #define CETRIS_STRUCTS_HPP
 
 struct Coord {
-    unsigned x;
-    unsigned y;
+    int x;
+    int y;
 
     friend bool operator<(const Coord &left, const Coord &right) {
         if (left.x < right.x) {
