@@ -18,16 +18,18 @@ public:
     }
 
     void rotate(Direction direction) {
-        for (auto &coord : tiles) {
-            Coord newCoord;
-            if (direction == Direction::LEFT){
-                newCoord.x = coord.y;
-                newCoord.y = -coord.x;
-            } else {
-                newCoord.x = -coord.y;
-                newCoord.y = coord.x;
+        if (isRotatable) {
+            for (auto &coord : tiles) {
+                Coord newCoord;
+                if (direction == Direction::LEFT) {
+                    newCoord.x = coord.y;
+                    newCoord.y = -coord.x;
+                } else {
+                    newCoord.x = -coord.y;
+                    newCoord.y = coord.x;
+                }
+                coord = newCoord;
             }
-            coord = newCoord;
         }
     }
 
@@ -35,11 +37,11 @@ public:
         tileSize = size;
     }
 
-    void doStep(){
+    void doStep() {
         coord.y++;
     }
 
-    void slide(int position){
+    void slide(int position) {
         coord.x += position;
     }
 
@@ -47,7 +49,11 @@ public:
         this->coord = coord;
     }
 
-    void updateTilePos(sf::RectangleShape& tile, Coord offset) const {
+    void setRotatable(bool value) {
+        isRotatable = true;
+    }
+
+    void updateTilePos(sf::RectangleShape &tile, Coord offset) const {
         tile.setPosition((coord.x + offset.x) * tileSize, (coord.y + offset.y) * tileSize);
     }
 
@@ -55,8 +61,8 @@ public:
         return coord;
     }
 
-    std::vector<Coord> getTileCoords() {
-        std::vector <Coord> coords;
+    const std::vector<Coord> getTileCoords() {
+        std::vector<Coord> coords;
         for (auto coord : tiles) {
             coords.push_back({coord.x + this->coord.x, coord.y + this->coord.y});
         }
@@ -64,15 +70,16 @@ public:
     }
 
 private:
-    Coord coord = {0,0};
+    Coord coord = {0, 0};
     std::vector<Coord> tiles;
     unsigned tileSize = 30;
+    bool isRotatable = true;
 
     virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const {
         states.transform *= getTransform();
         sf::RectangleShape tile(sf::Vector2f(tileSize, tileSize));
 
-        for (auto &offset : tiles){
+        for (auto &offset : tiles) {
             updateTilePos(tile, offset);
             target.draw(tile, states);
         }

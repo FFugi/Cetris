@@ -32,7 +32,6 @@ public:
 
     void setField(Coord coords, bool value) {
         if (!areCoordsOk(coords)) {
-            std::cout << coords.x <<", "<<coords.y <<std::endl;
             throw std::out_of_range("Width or height is too high!");
         }
         fields.insert_or_assign(coords, value);
@@ -93,7 +92,6 @@ private:
     bool areCoordsOk(Coord coords) {
         return coords.x < width && coords.y < height && coords.x >= 0 && coords.y >= 0;
     }
-
 
     unsigned tileSize = 30;
     unsigned outlineThickness = 4;

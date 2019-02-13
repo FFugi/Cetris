@@ -25,18 +25,12 @@ public:
             if (clock.getElapsedTime().asMilliseconds() > static_cast<int>(step)) {
                 clock.restart();
                 auto coords = shape.getTileCoords();
-                bool shallContinue = true;
-                for (auto &coord: coords) {
-                    if (coord.y == static_cast<int>(height - 1) || board.getField({coord.x, coord.y + 1})) {
-                        setTiles(coords);
-                        shallContinue = false;
-                        resetShape();
-                        // TODO score
-                        board.checkFullLines();
-                        break;
-                    }
-                }
-                if (shallContinue) {
+                if (isCoordOccupied(coords, {0, 1})) {
+                    setTiles(coords);
+                    resetShape();
+                    // TODO score
+                    board.checkFullLines();
+                } else {
                     shape.doStep();
                 }
             }
@@ -55,28 +49,29 @@ public:
                 window.close();
             }
             if (event.type == sf::Event::KeyPressed) {
-                switch (event.key.code) {
-                    case sf::Keyboard::A:
+                auto coords = shape.getTileCoords();
+                if (event.key.code == sf::Keyboard::A) {
+                    if (!isCoordOccupied(coords, {-1, 0})) {
                         shape.slide(-1);
-                        break;
-                    case sf::Keyboard::D:
+                    }
+                } else if (event.key.code == sf::Keyboard::D) {
+                    if (!isCoordOccupied(coords, {1, 0})) {
                         shape.slide(1);
-                        break;
-                    case sf::Keyboard::W:
-                        shape.rotate(Direction::LEFT);
-                        break;
-                    case sf::Keyboard::S:
-                        break;
-                    default:
-                        break;
+                    }
+                } else if (event.key.code == sf::Keyboard::W) {
+                    shape.rotate(Direction::LEFT);
+                    coords = shape.getTileCoords();
+                    if (isCoordOccupied(coords, {0, 0})) {
+                        shape.rotate(Direction::RIGHT);
+                    }
                 }
             }
         }
     }
 
 private:
-    unsigned width = 6;
-    unsigned height = 10;
+    unsigned width = 16;
+    unsigned height = 12;
     unsigned step = 200;
     unsigned tileSize = 30;
     int winWidth = width * tileSize;
@@ -87,6 +82,20 @@ private:
     Board board;
     Shape shape;
 
+    bool isCoordOccupied(std::vector<Coord> &tiles, Coord offset) {
+        for (auto &tile: tiles) {
+            Coord coord = {tile.x + offset.x, tile.y + offset.y};
+            if (coord.y >= static_cast<int>(height)
+                || coord.y < 0
+                || coord.x >= static_cast<int>(width)
+                || coord.x < 0
+                || board.getField(coord)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     void setTiles(std::vector<Coord> &coords) {
         for (auto &coord: coords) {
             board.setField(coord, true);
@@ -94,7 +103,9 @@ private:
     }
 
     void resetShape() {
-        shape.setCoord({static_cast<int>(width) / 2, 0});
+        Shape shape;
+        this->shape = shape;
+        this->shape.setCoord({static_cast<int>(width) / 2, 0});
     }
 };
 
