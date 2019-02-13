@@ -8,47 +8,59 @@
 #include <SFML/Graphics.hpp>
 #include "Structs.hpp"
 
-class Shape {
+class Shape : public sf::Drawable, public sf::Transformable {
 public:
-    Shape() : tile(sf::Vector2f(tileSize, tileSize)) {
-
+    Shape() {
+        tiles.push_back({0, 0});
+        tiles.push_back({1, 0});
     }
 
     void setTileSize(unsigned size) {
         tileSize = size;
     }
 
-    sf::RectangleShape getTile() {
-        return tile;
-    }
-
     void doStep(){
         coord.y++;
-        updateTilePos();
     }
 
     void slide(int position){
         coord.x += position;
-        updateTilePos();
     }
 
     void setCoord(Coord coord) {
         this->coord = coord;
-        updateTilePos();
     }
 
-    void updateTilePos() {
-        tile.setPosition(coord.x * tileSize, coord.y * tileSize);
+    void updateTilePos(sf::RectangleShape& tile, Coord offset) const {
+        tile.setPosition((coord.x + offset.x) * tileSize, (coord.y + offset.y) * tileSize);
     }
 
     Coord getCoord() {
         return coord;
     }
 
+    std::vector<Coord> getTileCoords() {
+        std::vector <Coord> coords;
+        for (auto coord : tiles) {
+            coords.push_back({coord.x + this->coord.x, coord.y + this->coord.y});
+        }
+        return coords;
+    }
+
 private:
-    unsigned tileSize = 30;
-    sf::RectangleShape tile;
     Coord coord = {0,0};
+    std::vector<Coord> tiles;
+    unsigned tileSize = 30;
+
+    virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const {
+        states.transform *= getTransform();
+        sf::RectangleShape tile(sf::Vector2f(tileSize, tileSize));
+
+        for (auto &offset : tiles){
+            updateTilePos(tile, offset);
+            target.draw(tile, states);
+        }
+    }
 };
 
 
