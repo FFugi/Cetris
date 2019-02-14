@@ -43,7 +43,8 @@ void Shape::setRotatable(bool value) {
 }
 
 void Shape::updateTilePos(sf::RectangleShape &tile, Coord offset) const {
-    tile.setPosition((coord.x + offset.x) * tileSize, (coord.y + offset.y) * tileSize);
+    tile.setPosition(outlineThickness + (coord.x + offset.x) * tileSize,  outlineThickness + (coord.y + offset.y) *
+    tileSize);
 }
 
 Coord Shape::getCoord() {
@@ -60,7 +61,10 @@ const std::vector<Coord> Shape::getTileCoords() {
 
 void Shape::draw(sf::RenderTarget &target, sf::RenderStates states) const {
     states.transform *= getTransform();
-    sf::RectangleShape tile(sf::Vector2f(tileSize, tileSize));
+    sf::RectangleShape tile(sf::Vector2f(tileSize - 2 * outlineThickness, tileSize - 2 * outlineThickness));
+    tile.setFillColor(sf::Color::White);
+    tile.setOutlineColor(sf::Color::Black);
+    tile.setOutlineThickness(outlineThickness);
 
     for (auto &offset : tiles) {
         updateTilePos(tile, offset);

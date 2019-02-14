@@ -42,6 +42,7 @@ private:
     std::vector<Coord> tiles;
     unsigned tileSize = 30;
     bool isRotatable = true;
+    int outlineThickness = 5;
 
     virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
 };

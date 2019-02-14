@@ -58,7 +58,7 @@ void Board::draw(sf::RenderTarget &target, sf::RenderStates states) const {
 
     unsigned size = tileSize - 2 * outlineThickness;
     sf::RectangleShape rect(sf::Vector2f(size, size));
-    rect.setOutlineColor(sf::Color::Red);
+    rect.setOutlineColor(sf::Color::Black);
     rect.setOutlineThickness(outlineThickness);
     for (int y = 0; y < height; y++) {
         for (int x = 0; x < width; x++) {
