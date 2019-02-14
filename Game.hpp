@@ -10,12 +10,15 @@
 #include "Board.hpp"
 #include "Shape.hpp"
 #include "ShapeGenerator.hpp"
+#include "InfoPanel.hpp"
 
 class Game {
 public:
     Game() : window(sf::VideoMode(winWidth, winHeight), "Cetris", sf::Style::Close), board(width, height) {
         assignShapesToGenerator();
         board.setTileSize(tileSize);
+        infoPanel.setDimensions(winWidth, 30);
+        infoPanel.setPosition(0, winHeight - 30);
     }
 
     void run();
@@ -28,10 +31,12 @@ private:
     unsigned step = 700;
     unsigned tileSize = 30;
     int winWidth = width * tileSize;
-    int winHeight = height * tileSize;
+    int winHeight = height * tileSize + 30;
+    int score = 0;
     sf::Event event;
     sf::Clock clock;
     sf::RenderWindow window;
+    InfoPanel infoPanel;
     Board board;
     Shape shape;
     ShapeGenerator generator;

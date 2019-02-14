@@ -17,6 +17,7 @@ void Game::run() {
 
         window.draw(board);
         window.draw(shape);
+        window.draw(infoPanel);
 
         window.display();
     }
@@ -141,7 +142,8 @@ void Game::doStep() {
         setTiles(coords);
         resetShape();
         // TODO score
-        board.removeFullLines();
+        score += board.removeFullLines();
+        infoPanel.setScore(score);
     } else {
         shape.doStep();
     }
