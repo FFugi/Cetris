@@ -9,10 +9,12 @@
 #include <SFML/Graphics.hpp>
 #include "Board.hpp"
 #include "Shape.hpp"
+#include "ShapeGenerator.hpp"
 
 class Game {
 public:
     Game() : window(sf::VideoMode(winWidth, winHeight), "Cetris", sf::Style::Close), board(width, height) {
+        assignShapesToGenerator();
         board.setTileSize(tileSize);
     }
 
@@ -23,7 +25,7 @@ public:
 private:
     unsigned width = 10;
     unsigned height = 16;
-    unsigned step = 200;
+    unsigned step = 700;
     unsigned tileSize = 30;
     int winWidth = width * tileSize;
     int winHeight = height * tileSize;
@@ -32,6 +34,9 @@ private:
     sf::RenderWindow window;
     Board board;
     Shape shape;
+    ShapeGenerator generator;
+
+    void assignShapesToGenerator();
 
     bool isCoordOccupied(std::vector<Coord> &tiles, Coord offset);
 

@@ -25,6 +25,8 @@ public:
 
     void slide(int position);
 
+    void setTileCoords(std::vector<Coord> coords);
+
     void setCoord(Coord coord);
 
     void setRotatable(bool value);

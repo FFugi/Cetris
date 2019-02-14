@@ -1,3 +1,5 @@
+#include <utility>
+
 //
 // Created by ffugi on 13.02.19.
 //
@@ -64,4 +66,8 @@ void Shape::draw(sf::RenderTarget &target, sf::RenderStates states) const {
         updateTilePos(tile, offset);
         target.draw(tile, states);
     }
+}
+
+void Shape::setTileCoords(std::vector<Coord> coords) {
+    this->tiles = std::move(coords);
 }

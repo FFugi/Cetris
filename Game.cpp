@@ -47,17 +47,19 @@ void Game::pollEvents() {
                     shape.slide(1);
                 }
             } else if (event.key.code == sf::Keyboard::W) {
-                shape.rotate(Direction::LEFT);
+                shape.rotate(Direction::RIGHT);
                 coords = shape.getTileCoords();
                 if (isCoordOccupied(coords, {0, 0})) {
-                    shape.rotate(Direction::RIGHT);
+                    shape.rotate(Direction::LEFT);
                 }
             } else if (event.key.code == sf::Keyboard::S) {
-                auto coords = shape.getTileCoords();
+                coords = shape.getTileCoords();
                 if (!isCoordOccupied(coords, {0, 1})) {
                     shape.doStep();
                     clock.restart();
                 }
+            } else if (event.key.code == sf::Keyboard::Escape) {
+                window.close();
             }
         }
     }
@@ -84,7 +86,63 @@ void Game::setTiles(std::vector<Coord> &coords) {
 }
 
 void Game::resetShape() {
-    Shape shape;
-    this->shape = shape;
+    this->shape = generator.getRandomShape();
     this->shape.setCoord({static_cast<int>(width) / 2, 0});
+}
+
+void Game::assignShapesToGenerator() {
+    // ####
+    std::vector<Coord> longCoords;
+    Shape longShape;
+    longCoords.push_back({-1,0});
+    longCoords.push_back({0,0});
+    longCoords.push_back({1,0});
+    longCoords.push_back({2,0});
+    longShape.setTileCoords(longCoords);
+    generator.addShapeCoords("long", longShape);
+
+    // ##
+    // ##
+    std::vector<Coord> boxCoords;
+    Shape boxShape;
+    boxCoords.push_back({-1,0});
+    boxCoords.push_back({0,0});
+    boxCoords.push_back({-1,1});
+    boxCoords.push_back({0,1});
+    boxShape.setRotatable(false);
+    boxShape.setTileCoords(boxCoords);
+    generator.addShapeCoords("box", boxShape);
+
+    //  ##
+    // ##
+    std::vector<Coord> zigZagCoordsRight;
+    Shape zigZagShapeRight;
+    zigZagCoordsRight.push_back({-1, 1});
+    zigZagCoordsRight.push_back({0, 1});
+    zigZagCoordsRight.push_back({0, 0});
+    zigZagCoordsRight.push_back({1, 0});
+    zigZagShapeRight.setTileCoords(zigZagCoordsRight);
+    generator.addShapeCoords("zigZagRight", zigZagShapeRight);
+
+    // ##
+    //  ##
+    std::vector<Coord> zigZagCoordsLeft;
+    Shape zigZagShapeLeft;
+    zigZagCoordsLeft .push_back({-1, 0});
+    zigZagCoordsLeft.push_back({0, 1});
+    zigZagCoordsLeft.push_back({0, 0});
+    zigZagCoordsLeft.push_back({1, 1});
+    zigZagShapeLeft.setTileCoords(zigZagCoordsLeft);
+    generator.addShapeCoords("zigZagLeft", zigZagShapeLeft);
+
+    // ###
+    //  #
+    std::vector<Coord> podiumCoords;
+    Shape podiumShape;
+    podiumCoords.push_back({-1, 0});
+    podiumCoords.push_back({0, 0});
+    podiumCoords.push_back({1, 0});
+    podiumCoords.push_back({0, 1});
+    podiumShape.setTileCoords(podiumCoords);
+    generator.addShapeCoords("podium", podiumShape);
 }
