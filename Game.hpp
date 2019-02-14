@@ -36,6 +36,8 @@ private:
     Shape shape;
     ShapeGenerator generator;
 
+    void doStep();
+
     void assignShapesToGenerator();
 
     bool isCoordOccupied(std::vector<Coord> &tiles, Coord offset);

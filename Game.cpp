@@ -11,16 +11,7 @@ void Game::run() {
         pollEvents();
 
         if (clock.getElapsedTime().asMilliseconds() > static_cast<int>(step)) {
-            clock.restart();
-            auto coords = shape.getTileCoords();
-            if (isCoordOccupied(coords, {0, 1})) {
-                setTiles(coords);
-                resetShape();
-                // TODO score
-                board.removeFullLines();
-            } else {
-                shape.doStep();
-            }
+            doStep();
         }
         window.clear(sf::Color::Black);
 
@@ -53,11 +44,7 @@ void Game::pollEvents() {
                     shape.rotate(Direction::LEFT);
                 }
             } else if (event.key.code == sf::Keyboard::S) {
-                coords = shape.getTileCoords();
-                if (!isCoordOccupied(coords, {0, 1})) {
-                    shape.doStep();
-                    clock.restart();
-                }
+                doStep();
             } else if (event.key.code == sf::Keyboard::Escape) {
                 window.close();
             }
@@ -145,4 +132,17 @@ void Game::assignShapesToGenerator() {
     podiumCoords.push_back({0, 1});
     podiumShape.setTileCoords(podiumCoords);
     generator.addShapeCoords("podium", podiumShape);
+}
+
+void Game::doStep() {
+    clock.restart();
+    auto coords = shape.getTileCoords();
+    if (isCoordOccupied(coords, {0, 1})) {
+        setTiles(coords);
+        resetShape();
+        // TODO score
+        board.removeFullLines();
+    } else {
+        shape.doStep();
+    }
 }
