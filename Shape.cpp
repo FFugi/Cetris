@@ -39,7 +39,7 @@ void Shape::setCoord(Coord coord) {
 }
 
 void Shape::setRotatable(bool value) {
-    isRotatable = true;
+    isRotatable = value;
 }
 
 void Shape::updateTilePos(sf::RectangleShape &tile, Coord offset) const {
