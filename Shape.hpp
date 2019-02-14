@@ -17,57 +17,23 @@ public:
         tiles.push_back({2, 0});
     }
 
-    void rotate(Direction direction) {
-        if (isRotatable) {
-            for (auto &coord : tiles) {
-                Coord newCoord;
-                if (direction == Direction::LEFT) {
-                    newCoord.x = coord.y;
-                    newCoord.y = -coord.x;
-                } else {
-                    newCoord.x = -coord.y;
-                    newCoord.y = coord.x;
-                }
-                coord = newCoord;
-            }
-        }
-    }
+    void rotate(Direction direction);
 
-    void setTileSize(unsigned size) {
-        tileSize = size;
-    }
+    void setTileSize(unsigned size);
 
-    void doStep() {
-        coord.y++;
-    }
+    void doStep();
 
-    void slide(int position) {
-        coord.x += position;
-    }
+    void slide(int position);
 
-    void setCoord(Coord coord) {
-        this->coord = coord;
-    }
+    void setCoord(Coord coord);
 
-    void setRotatable(bool value) {
-        isRotatable = true;
-    }
+    void setRotatable(bool value);
 
-    void updateTilePos(sf::RectangleShape &tile, Coord offset) const {
-        tile.setPosition((coord.x + offset.x) * tileSize, (coord.y + offset.y) * tileSize);
-    }
+    void updateTilePos(sf::RectangleShape &tile, Coord offset) const;
 
-    Coord getCoord() {
-        return coord;
-    }
+    Coord getCoord();
 
-    const std::vector<Coord> getTileCoords() {
-        std::vector<Coord> coords;
-        for (auto coord : tiles) {
-            coords.push_back({coord.x + this->coord.x, coord.y + this->coord.y});
-        }
-        return coords;
-    }
+    const std::vector<Coord> getTileCoords();
 
 private:
     Coord coord = {0, 0};
@@ -75,15 +41,7 @@ private:
     unsigned tileSize = 30;
     bool isRotatable = true;
 
-    virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const {
-        states.transform *= getTransform();
-        sf::RectangleShape tile(sf::Vector2f(tileSize, tileSize));
-
-        for (auto &offset : tiles) {
-            updateTilePos(tile, offset);
-            target.draw(tile, states);
-        }
-    }
+    virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
 };
 
 

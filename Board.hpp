@@ -23,75 +23,23 @@ public:
                 fields.insert_or_assign({x, y}, false);
             }
         }
-        std::cout << fields.size() << std::endl;
     }
 
-    void setTileSize(unsigned size) {
-        tileSize = size;
-    }
+    void setTileSize(unsigned size);
 
-    void setField(Coord coords, bool value) {
-        if (!areCoordsOk(coords)) {
-            throw std::out_of_range("Width or height is too high!");
-        }
-        fields.insert_or_assign(coords, value);
-        std::cout << fields.size() << std::endl;
-    }
+    void setField(Coord coords, bool value);
 
-    bool getField(Coord coords) {
-        if (!areCoordsOk(coords)) {
-            throw std::out_of_range("Width or height is too high!");
-        }
-        return fields.at(coords);
-    }
+    bool getField(Coord coords);
 
-    int checkFullLines() {
-        int lines = 0;
-        for(int y = 0; y < height; y++){
-            bool hasLine = true;
-            for(int x = 0; x < width; x++){
-                if (!getField({x, y})){
-                    hasLine = false;
-                }
-            }
-            if (hasLine){
-                lines++;
-            }
-        }
-        return lines;
-    }
+    int removeFullLines();
 
-    void print() {
-        for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
-                std::cout << (fields.at({x, y}) ? '#' : '.');
-            }
-            std::cout << std::endl;
-        }
-    }
+    void print();
 
 private:
 
-    virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const {
-        states.transform *= getTransform();
+    virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
 
-        unsigned size = tileSize - 2*outlineThickness;
-        sf::RectangleShape rect(sf::Vector2f(size, size));
-        rect.setOutlineColor(sf::Color::Red);
-        rect.setOutlineThickness(outlineThickness);
-        for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
-                if (fields.at({x, y})) {
-                    rect.setPosition(x * tileSize + outlineThickness, y * tileSize + outlineThickness);
-                    target.draw(rect, states);
-                }
-            }
-        }
-    }
-
-    bool areCoordsOk(Coord coords) {
-        return coords.x < width && coords.y < height && coords.x >= 0 && coords.y >= 0;
-    }
+    bool areCoordsOk(Coord coords);
 
     unsigned tileSize = 30;
     unsigned outlineThickness = 4;
