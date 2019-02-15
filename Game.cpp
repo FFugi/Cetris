@@ -10,7 +10,7 @@ void Game::run() {
     while (window.isOpen()) {
         pollEvents();
 
-        if (clock.getElapsedTime().asMilliseconds() > static_cast<int>(step)) {
+        if (!isStopped && clock.getElapsedTime().asMilliseconds() > static_cast<int>(step)) {
             doStep();
         }
         window.clear(sf::Color::Black);
@@ -29,31 +29,34 @@ void Game::pollEvents() {
             window.close();
         }
         if (event.type == sf::Event::KeyPressed) {
-            auto coords = shape.getTileCoords();
-            if (event.key.code == sf::Keyboard::A) {
-                if (!isCoordOccupied(coords, {-1, 0})) {
-                    shape.slide(-1);
+            if (!isStopped) {
+                auto coords = shape.getTileCoords();
+                if (event.key.code == sf::Keyboard::A) {
+                    if (!isCoordOccupied(coords, {-1, 0})) {
+                        shape.slide(-1);
+                    }
+                } else if (event.key.code == sf::Keyboard::D) {
+                    if (!isCoordOccupied(coords, {1, 0})) {
+                        shape.slide(1);
+                    }
+                } else if (event.key.code == sf::Keyboard::W) {
+                    shape.rotate(Direction::RIGHT);
+                    coords = shape.getTileCoords();
+                    if (isCoordOccupied(coords, {0, 0})) {
+                        shape.rotate(Direction::LEFT);
+                    }
+                } else if (event.key.code == sf::Keyboard::S) {
+                    doStep();
                 }
-            } else if (event.key.code == sf::Keyboard::D) {
-                if (!isCoordOccupied(coords, {1, 0})) {
-                    shape.slide(1);
-                }
-            } else if (event.key.code == sf::Keyboard::W) {
-                shape.rotate(Direction::RIGHT);
-                coords = shape.getTileCoords();
-                if (isCoordOccupied(coords, {0, 0})) {
-                    shape.rotate(Direction::LEFT);
-                }
-            } else if (event.key.code == sf::Keyboard::S) {
-                doStep();
-            } else if (event.key.code == sf::Keyboard::Escape) {
+            }
+            if (event.key.code == sf::Keyboard::Escape) {
                 window.close();
             }
         }
     }
 }
 
-bool Game::isCoordOccupied(std::vector<Coord> &tiles, Coord offset) {
+bool Game::isCoordOccupied(const std::vector<Coord> &tiles, const Coord offset) {
     for (auto &tile: tiles) {
         Coord coord = {tile.x + offset.x, tile.y + offset.y};
         if (coord.y >= static_cast<int>(height)
@@ -67,7 +70,7 @@ bool Game::isCoordOccupied(std::vector<Coord> &tiles, Coord offset) {
     return false;
 }
 
-void Game::setTiles(std::vector<Coord> &coords) {
+void Game::setTiles(const std::vector<Coord> &coords) {
     for (auto &coord: coords) {
         board.setField(coord, true);
     }
@@ -163,6 +166,9 @@ void Game::doStep() {
     if (isCoordOccupied(coords, {0, 1})) {
         setTiles(coords);
         resetShape();
+        if (isCoordOccupied(shape.getTileCoords(), {0, 0})) {
+            endGame();
+        }
         // TODO score
         switch (board.removeFullLines()) {
             case 1:
@@ -184,4 +190,8 @@ void Game::doStep() {
     } else {
         shape.doStep();
     }
+}
+
+void Game::endGame() {
+    isStopped = true;
 }

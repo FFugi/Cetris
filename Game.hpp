@@ -40,16 +40,19 @@ private:
     Board board;
     Shape shape;
     ShapeGenerator generator;
+    bool isStopped = false;
 
     void doStep();
 
     void assignShapesToGenerator();
 
-    bool isCoordOccupied(std::vector<Coord> &tiles, Coord offset);
+    bool isCoordOccupied(const std::vector<Coord> &tiles, const Coord offset);
 
-    void setTiles(std::vector<Coord> &coords);
+    void setTiles(const std::vector<Coord> &coords);
 
     void resetShape();
+
+    void endGame();
 };
 
 
