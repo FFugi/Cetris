@@ -82,10 +82,10 @@ void Game::assignShapesToGenerator() {
     // ####
     std::vector<Coord> longCoords;
     Shape longShape;
-    longCoords.push_back({-1,0});
-    longCoords.push_back({0,0});
-    longCoords.push_back({1,0});
-    longCoords.push_back({2,0});
+    longCoords.push_back({-1, 0});
+    longCoords.push_back({0, 0});
+    longCoords.push_back({1, 0});
+    longCoords.push_back({2, 0});
     longShape.setTileCoords(longCoords);
     generator.addShapeCoords("long", longShape);
 
@@ -93,10 +93,10 @@ void Game::assignShapesToGenerator() {
     // ##
     std::vector<Coord> boxCoords;
     Shape boxShape;
-    boxCoords.push_back({-1,0});
-    boxCoords.push_back({0,0});
-    boxCoords.push_back({-1,1});
-    boxCoords.push_back({0,1});
+    boxCoords.push_back({-1, 0});
+    boxCoords.push_back({0, 0});
+    boxCoords.push_back({-1, 1});
+    boxCoords.push_back({0, 1});
     boxShape.setRotatable(false);
     boxShape.setTileCoords(boxCoords);
     generator.addShapeCoords("box", boxShape);
@@ -116,7 +116,7 @@ void Game::assignShapesToGenerator() {
     //  ##
     std::vector<Coord> zigZagCoordsLeft;
     Shape zigZagShapeLeft;
-    zigZagCoordsLeft .push_back({-1, 0});
+    zigZagCoordsLeft.push_back({-1, 0});
     zigZagCoordsLeft.push_back({0, 1});
     zigZagCoordsLeft.push_back({0, 0});
     zigZagCoordsLeft.push_back({1, 1});
@@ -133,6 +133,28 @@ void Game::assignShapesToGenerator() {
     podiumCoords.push_back({0, 1});
     podiumShape.setTileCoords(podiumCoords);
     generator.addShapeCoords("podium", podiumShape);
+
+    // ###
+    // #
+    std::vector<Coord> LCoordsLeft;
+    Shape LShapeLeft;
+    LCoordsLeft.push_back({-1, 1});
+    LCoordsLeft.push_back({-1, 0});
+    LCoordsLeft.push_back({0, 0});
+    LCoordsLeft.push_back({1, 0});
+    LShapeLeft.setTileCoords(LCoordsLeft);
+    generator.addShapeCoords("LLeft", LShapeLeft);
+
+    // ###
+    //   #
+    std::vector<Coord> LCoordsRight;
+    Shape LShapeRight;
+    LCoordsRight.push_back({-1, 0});
+    LCoordsRight.push_back({0, 0});
+    LCoordsRight.push_back({1, 0});
+    LCoordsRight.push_back({1, 1});
+    LShapeRight.setTileCoords(LCoordsRight);
+    generator.addShapeCoords("LRight", LShapeRight);
 }
 
 void Game::doStep() {
@@ -142,7 +164,22 @@ void Game::doStep() {
         setTiles(coords);
         resetShape();
         // TODO score
-        score += board.removeFullLines();
+        switch (board.removeFullLines()) {
+            case 1:
+                score += 1;
+                break;
+            case 2:
+                score += 4;
+                break;
+            case 3:
+                score += 12;
+                break;
+            case 4:
+                score += 20;
+                break;
+            default:
+                break;
+        }
         infoPanel.setScore(score);
     } else {
         shape.doStep();

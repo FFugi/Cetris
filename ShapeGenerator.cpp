@@ -5,7 +5,7 @@
 #include "ShapeGenerator.hpp"
 
 Shape ShapeGenerator::getRandomShape() const {
-    // TODO
+    // TODO better randomization
     int shapeToReturn = static_cast<int>(rand() % shapes.size());
     std::cout << shapeToReturn << std::endl;
     int iterator = 0;
