@@ -20,8 +20,9 @@ void InfoPanel::draw(sf::RenderTarget &target, sf::RenderStates states) const {
 }
 
 InfoPanel::InfoPanel() {
-    if (font.loadFromFile("VCR_OSD_MONO_1.001.ttf")) {
+    if (!font.loadFromFile("VCR_OSD_MONO_1.001.ttf")) {
         std::cerr << "Couldn't load font file VCR_OSD_MONO_1.001.ttf!" << std::endl;
+        exit(1);
     }
     scoreText.setFont(font);
     scoreText.setString("Score: 0");
