@@ -178,7 +178,12 @@ void Game::doStep() {
             endGame();
         }
         // TODO score
-        switch (board.removeFullLines()) {
+        const int lines = board.removeFullLines();
+        if (lines > 0) {
+            clears++;
+            infoPanel.setClears(clears);
+        }
+        switch (lines) {
             case 1:
                 score += 1;
                 break;
@@ -216,12 +221,13 @@ Game::Game() : window(sf::VideoMode(winWidth, winHeight), "Cetris", sf::Style::C
     }
     infoPanel.setFont(font);
     stopPanel.setFont(font);
-    infoPanel.setDimensions(winWidth, 30);
-    infoPanel.setPosition(0, winHeight - 30);
+    infoPanel.setDimensions(winWidth, barHeight);
+    infoPanel.setPosition(0, winHeight - barHeight);
     stopPanel.setDimensions(250, 250);
     stopPanel.setOrigin(125, 125);
     stopPanel.setPosition(winWidth / 2, winHeight / 2);
     infoPanel.setScore(score);
+    infoPanel.setClears(clears);
 }
 
 void Game::restartGame() {
