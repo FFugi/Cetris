@@ -27,9 +27,10 @@ public:
         stopPanel.setFont(font);
         infoPanel.setDimensions(winWidth, 30);
         infoPanel.setPosition(0, winHeight - 30);
-        stopPanel.setDimensions(250, 200);
-        stopPanel.setOrigin(125, 100);
+        stopPanel.setDimensions(250, 250);
+        stopPanel.setOrigin(125, 125);
         stopPanel.setPosition(winWidth / 2, winHeight / 2);
+        infoPanel.setScore(score);
     }
 
     void run();
@@ -66,6 +67,12 @@ private:
     void resetShape();
 
     void endGame();
+
+    void restartGame() {
+        board.clear();
+        resetShape();
+        isStopped = false;
+    }
 };
 
 

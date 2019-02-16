@@ -18,11 +18,7 @@ public:
     Board(int width, int height) {
         this->height = height;
         this->width = width;
-        for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
-                fields.insert_or_assign({x, y}, false);
-            }
-        }
+        clear();
     }
 
     void setTileSize(unsigned size);
@@ -34,6 +30,8 @@ public:
     int removeFullLines();
 
     void print();
+
+    void clear();
 
 private:
 

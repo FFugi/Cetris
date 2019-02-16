@@ -20,7 +20,6 @@ void InfoPanel::draw(sf::RenderTarget &target, sf::RenderStates states) const {
 }
 
 InfoPanel::InfoPanel() {
-    scoreText.setString("Score: 0");
     scoreText.setCharacterSize(20);
     background.setSize(sf::Vector2f(100, 30));
     background.setFillColor(sf::Color::Black);

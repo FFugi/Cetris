@@ -51,6 +51,10 @@ void Game::pollEvents() {
                 } else if (event.key.code == sf::Keyboard::S) {
                     doStep();
                 }
+            } else {
+                if (event.key.code == sf::Keyboard::R) {
+                    restartGame();
+                }
             }
             if (event.key.code == sf::Keyboard::Escape) {
                 window.close();
@@ -80,6 +84,7 @@ void Game::setTiles(const std::vector<Coord> &coords) {
 }
 
 void Game::resetShape() {
+    clock.restart();
     this->shape = generator.getRandomShape();
     this->shape.setCoord({static_cast<int>(width) / 2, 0});
 }
@@ -198,5 +203,5 @@ void Game::doStep() {
 void Game::endGame() {
     isStopped = true;
     stopPanel.setHeaderText("GAME OVER");
-    stopPanel.setContentText("Your score:\n\n" + std::to_string(score));
+    stopPanel.setContentText("Your score:\n\n" + std::to_string(score) + "\n\nR -> Restart");
 }

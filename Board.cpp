@@ -100,3 +100,11 @@ void Board::draw(sf::RenderTarget &target, sf::RenderStates states) const {
 bool Board::areCoordsOk(Coord coords) {
     return coords.x < width && coords.y < height && coords.x >= 0 && coords.y >= 0;
 }
+
+void Board::clear() {
+    for (int y = 0; y < height; y++) {
+        for (int x = 0; x < width; x++) {
+            fields.insert_or_assign({x, y}, false);
+        }
+    }
+}
