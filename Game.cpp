@@ -18,6 +18,9 @@ void Game::run() {
         window.draw(board);
         window.draw(shape);
         window.draw(infoPanel);
+        if (isStopped) {
+            window.draw(stopPanel);
+        }
 
         window.display();
     }
@@ -181,7 +184,7 @@ void Game::doStep() {
                 score += 12;
                 break;
             case 4:
-                score += 20;
+                score += 36;
                 break;
             default:
                 break;
@@ -194,4 +197,6 @@ void Game::doStep() {
 
 void Game::endGame() {
     isStopped = true;
+    stopPanel.setHeaderText("GAME OVER");
+    stopPanel.setContentText("Your score:\n\n" + std::to_string(score));
 }

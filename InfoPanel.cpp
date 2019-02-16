@@ -20,13 +20,12 @@ void InfoPanel::draw(sf::RenderTarget &target, sf::RenderStates states) const {
 }
 
 InfoPanel::InfoPanel() {
-    if (!font.loadFromFile("VCR_OSD_MONO_1.001.ttf")) {
-        std::cerr << "Couldn't load font file VCR_OSD_MONO_1.001.ttf!" << std::endl;
-        exit(1);
-    }
-    scoreText.setFont(font);
     scoreText.setString("Score: 0");
     scoreText.setCharacterSize(20);
     background.setSize(sf::Vector2f(100, 30));
     background.setFillColor(sf::Color(150, 150, 150));
+}
+
+void InfoPanel::setFont(const sf::Font &font) {
+    scoreText.setFont(font);
 }

@@ -7,7 +7,6 @@
 
 
 #include <SFML/Graphics.hpp>
-#include <SFML/Graphics.hpp>
 #include <iostream>
 
 class InfoPanel : public sf::Drawable, public sf::Transformable  {
@@ -18,8 +17,9 @@ public:
 
     void setScore(int value);
 
+    void setFont(const sf::Font &font);
+
 private:
-    sf::Font font;
     sf::Text scoreText;
     sf::RectangleShape background;
 
