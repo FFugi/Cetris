@@ -205,3 +205,27 @@ void Game::endGame() {
     stopPanel.setHeaderText("GAME OVER");
     stopPanel.setContentText("Your score:\n\n" + std::to_string(score) + "\n\nR -> Restart");
 }
+
+Game::Game() : window(sf::VideoMode(winWidth, winHeight), "Cetris", sf::Style::Close), board(width, height) {
+    assignShapesToGenerator();
+    board.setTileSize(tileSize);
+
+    if (!font.loadFromFile("VCR_OSD_MONO_1.001.ttf")) {
+        std::cerr << "Couldn't load font file VCR_OSD_MONO_1.001.ttf!" << std::endl;
+        exit(1);
+    }
+    infoPanel.setFont(font);
+    stopPanel.setFont(font);
+    infoPanel.setDimensions(winWidth, 30);
+    infoPanel.setPosition(0, winHeight - 30);
+    stopPanel.setDimensions(250, 250);
+    stopPanel.setOrigin(125, 125);
+    stopPanel.setPosition(winWidth / 2, winHeight / 2);
+    infoPanel.setScore(score);
+}
+
+void Game::restartGame() {
+    board.clear();
+    resetShape();
+    isStopped = false;
+}
