@@ -183,13 +183,13 @@ void Game::doStep() {
                 score += 1;
                 break;
             case 2:
-                score += 4;
+                score += 5;
                 break;
             case 3:
-                score += 12;
+                score += 20;
                 break;
             case 4:
-                score += 36;
+                score += 40;
                 break;
             default:
                 break;
