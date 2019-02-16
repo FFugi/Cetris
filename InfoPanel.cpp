@@ -23,7 +23,7 @@ InfoPanel::InfoPanel() {
     scoreText.setString("Score: 0");
     scoreText.setCharacterSize(20);
     background.setSize(sf::Vector2f(100, 30));
-    background.setFillColor(sf::Color(150, 150, 150));
+    background.setFillColor(sf::Color::Black);
 }
 
 void InfoPanel::setFont(const sf::Font &font) {

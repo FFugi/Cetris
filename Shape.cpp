@@ -43,8 +43,8 @@ void Shape::setRotatable(bool value) {
 }
 
 void Shape::updateTilePos(sf::RectangleShape &tile, Coord offset) const {
-    tile.setPosition(outlineThickness + (coord.x + offset.x) * tileSize,  outlineThickness + (coord.y + offset.y) *
-    tileSize);
+    tile.setPosition(tileSize / 2 + outlineThickness + (coord.x + offset.x) * tileSize,
+                     outlineThickness + (coord.y + offset.y) * tileSize);
 }
 
 Coord Shape::getCoord() {

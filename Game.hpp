@@ -41,8 +41,8 @@ private:
     unsigned height = 16;
     unsigned step = 700;
     unsigned tileSize = 30;
-    int winWidth = width * tileSize;
-    int winHeight = height * tileSize + 30;
+    int winWidth = (width + 1) * tileSize;
+    int winHeight = height * tileSize + tileSize / 2 + 30;
     int score = 0;
     sf::Event event;
     sf::Clock clock;

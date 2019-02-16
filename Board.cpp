@@ -58,12 +58,39 @@ void Board::draw(sf::RenderTarget &target, sf::RenderStates states) const {
 
     unsigned size = tileSize - 2 * outlineThickness;
     sf::RectangleShape rect(sf::Vector2f(size, size));
-    rect.setOutlineColor(sf::Color::Black);
+    rect.setFillColor(sf::Color::Black);
+    rect.setOutlineColor(sf::Color::White);
     rect.setOutlineThickness(outlineThickness);
+    // draw outline
+    for (int y = -1; y < height; y++) {
+        rect.setPosition(-static_cast<float>(tileSize) / 2 + outlineThickness,
+                         y * tileSize + outlineThickness);
+        target.draw(rect, states);
+        rect.setPosition(tileSize / 2 + width * tileSize + outlineThickness,
+                         y * tileSize + outlineThickness);
+        target.draw(rect, states);
+    }
+    for (int x = 0; x < width; x++) {
+        rect.setPosition(tileSize / 2 + x * tileSize + outlineThickness,
+                         height * tileSize + outlineThickness);
+        target.draw(rect, states);
+    }
+    rect.setFillColor(sf::Color::White);
+    // corners
+    rect.setPosition(-static_cast<float >(tileSize) / 2 + outlineThickness,
+                     height * tileSize + outlineThickness);
+    target.draw(rect, states);
+    rect.setPosition(tileSize / 2 + width * tileSize + outlineThickness,
+                     height * tileSize + outlineThickness);
+    target.draw(rect, states);
+
+    rect.setOutlineColor(sf::Color::Black);
+    // draw playground
     for (int y = 0; y < height; y++) {
         for (int x = 0; x < width; x++) {
             if (fields.at({x, y})) {
-                rect.setPosition(x * tileSize + outlineThickness, y * tileSize + outlineThickness);
+                rect.setPosition(tileSize / 2 + x * tileSize + outlineThickness,
+                                 y * tileSize + outlineThickness);
                 target.draw(rect, states);
             }
         }
