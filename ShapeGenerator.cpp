@@ -7,7 +7,6 @@
 Shape ShapeGenerator::getRandomShape() const {
     // TODO better randomization
     int shapeToReturn = static_cast<int>(rand() % shapes.size());
-    std::cout << shapeToReturn << std::endl;
     int iterator = 0;
     std::string name;
     for (const auto &shape : shapes) {

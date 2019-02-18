@@ -10,7 +10,7 @@ void Game::run() {
     while (window.isOpen()) {
         pollEvents();
 
-        if (!isStopped && clock.getElapsedTime().asMilliseconds() > static_cast<int>(step)) {
+        if (!isStopped && clock.getElapsedTime().asMilliseconds() > static_cast<int>(stepManager.getStep())) {
             doStep();
         }
         window.clear(sf::Color::Black);
@@ -50,6 +50,8 @@ void Game::pollEvents() {
                     }
                 } else if (event.key.code == sf::Keyboard::S) {
                     doStep();
+                } else if (event.key.code == sf::Keyboard::X) {
+                    while (!doStep());
                 }
             } else {
                 if (event.key.code == sf::Keyboard::R) {
@@ -168,7 +170,7 @@ void Game::assignShapesToGenerator() {
     generator.addShapeCoords("LRight", LShapeRight);
 }
 
-void Game::doStep() {
+bool Game::doStep() {
     clock.restart();
     auto coords = shape.getTileCoords();
     if (isCoordOccupied(coords, {0, 1})) {
@@ -182,8 +184,11 @@ void Game::doStep() {
         if (lines > 0) {
             clears++;
             infoPanel.setClears(clears);
+            stepManager.updateStep(clears);
         }
         switch (lines) {
+            case 0:
+                break;
             case 1:
                 score += 1;
                 break;
@@ -197,12 +202,14 @@ void Game::doStep() {
                 score += 40;
                 break;
             default:
+                score += 40;
                 break;
         }
         infoPanel.setScore(score);
-    } else {
-        shape.doStep();
+        return true;
     }
+    shape.doStep();
+    return false;
 }
 
 void Game::endGame() {
@@ -211,10 +218,10 @@ void Game::endGame() {
     stopPanel.setContentText("Your score:\n\n" + std::to_string(score) + "\n\nR -> Restart");
 }
 
-Game::Game() : window(sf::VideoMode(winWidth, winHeight), "Cetris", sf::Style::Close), board(width, height) {
+Game::Game() : window(sf::VideoMode(winWidth, winHeight), "Cetris", sf::Style::Close), board(width, height),
+               stepManager(800) {
     assignShapesToGenerator();
     board.setTileSize(tileSize);
-
     if (!font.loadFromFile("VCR_OSD_MONO_1.001.ttf")) {
         std::cerr << "Couldn't load font file VCR_OSD_MONO_1.001.ttf!" << std::endl;
         exit(1);
@@ -228,6 +235,12 @@ Game::Game() : window(sf::VideoMode(winWidth, winHeight), "Cetris", sf::Style::C
     stopPanel.setPosition(winWidth / 2, winHeight / 2);
     infoPanel.setScore(score);
     infoPanel.setClears(clears);
+    // assign steps
+    stepManager.addStep({5, 800});
+    stepManager.addStep({10, 700});
+    stepManager.addStep({15, 500});
+    stepManager.addStep({25, 400});
+    stepManager.addStep({35, 300});
 }
 
 void Game::restartGame() {

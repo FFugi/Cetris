@@ -12,6 +12,7 @@
 #include "ShapeGenerator.hpp"
 #include "InfoPanel.hpp"
 #include "StopPanel.hpp"
+#include "StepManager.hpp"
 
 class Game {
 public:
@@ -24,7 +25,6 @@ public:
 private:
     unsigned width = 10;
     unsigned height = 16;
-    unsigned step = 700;
     unsigned tileSize = 30;
     int barHeight = 50;
     int winWidth = (width + 1) * tileSize;
@@ -40,9 +40,10 @@ private:
     Shape shape;
     ShapeGenerator generator;
     sf::Font font;
+    StepManager stepManager;
     bool isStopped = false;
 
-    void doStep();
+    bool doStep();
 
     void assignShapesToGenerator();
 
