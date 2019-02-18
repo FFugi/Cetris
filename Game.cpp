@@ -222,8 +222,8 @@ Game::Game() : window(sf::VideoMode(winWidth, winHeight), "Cetris", sf::Style::C
                stepManager(800) {
     assignShapesToGenerator();
     board.setTileSize(tileSize);
-    if (!font.loadFromFile("VCR_OSD_MONO_1.001.ttf")) {
-        std::cerr << "Couldn't load font file VCR_OSD_MONO_1.001.ttf!" << std::endl;
+    if (!font.loadFromFile("../Fleftex_M.ttf")) {
+        std::cerr << "Couldn't load font file Fleftex_M.ttf!" << std::endl;
         exit(1);
     }
     infoPanel.setFont(font);

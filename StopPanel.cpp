@@ -7,8 +7,8 @@
 StopPanel::StopPanel() {
     header.setString("Header");
     content.setString("Content");
-    header.setCharacterSize(30);
-    content.setCharacterSize(20);
+    header.setCharacterSize(24);
+    content.setCharacterSize(16);
     outer.setOutlineThickness(outlineThickness);
     outer.setOutlineColor(sf::Color::Black);
     outer.setFillColor(sf::Color::White);

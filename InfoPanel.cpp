@@ -33,9 +33,9 @@ InfoPanel::InfoPanel() {
     background.setOutlineColor(sf::Color::White);
     background.setOutlineThickness(outlineThickness);
     background.setPosition(0, outlineThickness);
-    scoreText.setCharacterSize(20);
+    scoreText.setCharacterSize(16);
     scoreText.setPosition(outlineThickness, outlineThickness);
-    linesText.setCharacterSize(20);
+    linesText.setCharacterSize(16);
     linesText.setPosition(outlineThickness, outlineThickness + 20);
 }
 
