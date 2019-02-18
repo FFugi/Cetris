@@ -17,7 +17,7 @@ public:
 
     void setScore(int value);
 
-    void setClears(const int value);
+    void setClears(int value);
 
     void setFont(const sf::Font &font);
 
@@ -26,6 +26,7 @@ private:
     sf::Text linesText;
     sf::RectangleShape background;
     int outlineThickness = 4;
+    int numberBuffer = 5;
 
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 };

@@ -3,17 +3,20 @@
 //
 
 #include "InfoPanel.hpp"
+#include "Helpers.hpp"
 
 void InfoPanel::setDimensions(int width, int height) {
     background.setSize(sf::Vector2f(width, height - outlineThickness));
 }
 
 void InfoPanel::setScore(const int value) {
-    scoreText.setString("Score: " + std::to_string(value));
+    scoreText.setString("Score:  " + Helpers::getSpaces(numberBuffer - Helpers::digitsNumber(value)) +
+                            std::to_string(value));
 }
 
 void InfoPanel::setClears(const int value) {
-    linesText.setString("Clears: " + std::to_string(value));
+    linesText.setString("Clears: " + Helpers::getSpaces(numberBuffer - Helpers::digitsNumber(value)) +
+                            std::to_string(value));
 }
 
 void InfoPanel::draw(sf::RenderTarget &target, sf::RenderStates states) const {
