@@ -43,7 +43,7 @@ int Board::removeFullLines() {
     }
     // Clear top rows
     for (int y = 0; y < lines; y++) {
-        for (int x = 0; x < lines; x++) {
+        for (int x = 0; x < width; x++) {
             setField({x, y}, false);
         }
     }
