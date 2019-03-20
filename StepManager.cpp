@@ -4,7 +4,8 @@
 
 #include "StepManager.hpp"
 
-StepManager::StepManager(unsigned defaultStep) : defaultStep(defaultStep), step(defaultStep), currentIndex(0) {
+StepManager::StepManager(unsigned defaultStep)
+    : defaultStep(defaultStep), step(defaultStep), currentIndex(0) {
 
 }
 
@@ -23,6 +24,6 @@ void StepManager::updateStep(unsigned clearCount) {
     step = stepTimes[currentIndex].second;
 }
 
-unsigned StepManager::getStep() {
+unsigned StepManager::getStep() const {
     return step;
 }

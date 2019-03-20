@@ -47,7 +47,7 @@ private:
 
     void assignShapesToGenerator();
 
-    bool isCoordOccupied(const std::vector<Coord> &tiles, const Coord offset);
+    bool isCoordOccupied(const std::vector<Coord> &tiles, const Coord offset) const;
 
     void setTiles(const std::vector<Coord> &coords);
 

@@ -34,24 +34,37 @@ void Game::pollEvents() {
         if (event.type == sf::Event::KeyPressed) {
             if (!isStopped) {
                 auto coords = shape.getTileCoords();
-                if (event.key.code == sf::Keyboard::A) {
-                    if (!isCoordOccupied(coords, {-1, 0})) {
-                        shape.slide(-1);
+                switch (event.key.code) {
+                    case sf::Keyboard::A: {
+                        if (!isCoordOccupied(coords, {-1, 0})) {
+                            shape.slide(-1);
+                        }
+                        break;
                     }
-                } else if (event.key.code == sf::Keyboard::D) {
-                    if (!isCoordOccupied(coords, {1, 0})) {
-                        shape.slide(1);
+                    case sf::Keyboard::D:{
+                        if (!isCoordOccupied(coords, {1, 0})) {
+                            shape.slide(1);
+                        }
+                        break;
                     }
-                } else if (event.key.code == sf::Keyboard::W) {
-                    shape.rotate(Direction::RIGHT);
-                    coords = shape.getTileCoords();
-                    if (isCoordOccupied(coords, {0, 0})) {
-                        shape.rotate(Direction::LEFT);
+                    case sf::Keyboard::W:{
+                        shape.rotate(Direction::RIGHT);
+                        coords = shape.getTileCoords();
+                        if (isCoordOccupied(coords, {0, 0})) {
+                            shape.rotate(Direction::LEFT);
+                        }
+                        break;
                     }
-                } else if (event.key.code == sf::Keyboard::S) {
-                    doStep();
-                } else if (event.key.code == sf::Keyboard::X) {
-                    while (!doStep());
+                    case sf::Keyboard::S: {
+                        doStep();
+                        break;
+                    }
+                    case sf::Keyboard::X: {
+                        while (!doStep());
+                        break;
+                    }
+                    default:
+                        break;
                 }
             } else {
                 if (event.key.code == sf::Keyboard::R) {
@@ -65,7 +78,7 @@ void Game::pollEvents() {
     }
 }
 
-bool Game::isCoordOccupied(const std::vector<Coord> &tiles, const Coord offset) {
+bool Game::isCoordOccupied(const std::vector<Coord> &tiles, const Coord offset) const {
     for (auto &tile: tiles) {
         Coord coord = {tile.x + offset.x, tile.y + offset.y};
         if (coord.y >= static_cast<int>(height)
