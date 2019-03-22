@@ -15,7 +15,7 @@ void Board::setField(Coord coords, bool value) {
     fields.insert_or_assign(coords, value);
 }
 
-bool Board::getField(Coord coords) {
+bool Board::getField(Coord coords) const {
     if (!areCoordsOk(coords)) {
         throw std::out_of_range("Width or height is too high!");
     }
@@ -50,7 +50,7 @@ int Board::removeFullLines() {
     return lines;
 }
 
-void Board::print() {
+void Board::print() const {
     for (int y = 0; y < height; y++) {
         for (int x = 0; x < width; x++) {
             std::cout << (fields.at({x, y}) ? '#' : '.');
@@ -103,7 +103,7 @@ void Board::draw(sf::RenderTarget &target, sf::RenderStates states) const {
     }
 }
 
-bool Board::areCoordsOk(Coord coords) {
+bool Board::areCoordsOk(Coord coords) const {
     return coords.x < width && coords.y < height && coords.x >= 0 && coords.y >= 0;
 }
 

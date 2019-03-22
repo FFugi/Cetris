@@ -25,11 +25,11 @@ public:
 
     void setField(Coord coords, bool value);
 
-    bool getField(Coord coords);
+    bool getField(Coord coords) const;
 
     int removeFullLines();
 
-    void print();
+    void print() const;
 
     void clear();
 
@@ -37,7 +37,7 @@ private:
 
     virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
 
-    bool areCoordsOk(Coord coords);
+    bool areCoordsOk(Coord coords) const;
 
     unsigned tileSize = 30;
     unsigned outlineThickness = 4;
