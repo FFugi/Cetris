@@ -18,7 +18,6 @@ namespace Helpers {
         return digits;
     }
 
-
     std::string getSpaces(int number) {
         std::string spaces;
         spaces.insert(0, static_cast<unsigned long>(number), ' ');

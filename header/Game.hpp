@@ -45,21 +45,9 @@ private:
 
     bool doStep();
 
-    unsigned getPlacementOffset() {
-        auto coords = shape.getTileCoords();
-        int val = 1;
-        while (!isCoordOccupied(coords, {0, val})) {
-            val++;
-        }
-        return static_cast<unsigned>(val - 1);
-    }
+    unsigned getPlacementOffset();
 
-    void updateGhost() {
-        unsigned offset = getPlacementOffset();
-        auto coord = shape.getCoord();
-        coord.y += offset;
-        ghostShape.setCoord(coord);
-    }
+    void updateGhost();
 
     void assignShapesToGenerator();
 

@@ -251,3 +251,19 @@ void Game::restartGame() {
     resetShape();
     isStopped = false;
 }
+
+unsigned Game::getPlacementOffset() {
+    auto coords = shape.getTileCoords();
+    int val = 1;
+    while (!isCoordOccupied(coords, {0, val})) {
+        val++;
+    }
+    return static_cast<unsigned>(val - 1);
+}
+
+void Game::updateGhost() {
+    unsigned offset = getPlacementOffset();
+    auto coord = shape.getCoord();
+    coord.y += offset;
+    ghostShape.setCoord(coord);
+}
