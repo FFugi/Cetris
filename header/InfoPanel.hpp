@@ -25,8 +25,8 @@ private:
     sf::Text scoreText;
     sf::Text linesText;
     sf::RectangleShape background;
-    int outlineThickness = 4;
-    int numberBuffer = 5;
+    int outlineThickness;
+    int numberBuffer;
 
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 };

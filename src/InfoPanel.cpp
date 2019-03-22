@@ -27,7 +27,7 @@ void InfoPanel::draw(sf::RenderTarget &target, sf::RenderStates states) const {
     target.draw(linesText, states);
 }
 
-InfoPanel::InfoPanel() {
+InfoPanel::InfoPanel() : outlineThickness(4), numberBuffer(5) {
     background.setSize(sf::Vector2f(100, 30));
     background.setFillColor(sf::Color::Black);
     background.setOutlineColor(sf::Color::White);

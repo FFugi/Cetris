@@ -3,6 +3,7 @@
 //
 
 #include "Game.hpp"
+#include <memory>
 
 
 void Game::run() {
@@ -42,13 +43,13 @@ void Game::pollEvents() {
                         }
                         break;
                     }
-                    case sf::Keyboard::D:{
+                    case sf::Keyboard::D: {
                         if (!isCoordOccupied(coords, {1, 0})) {
                             shape.slide(1);
                         }
                         break;
                     }
-                    case sf::Keyboard::W:{
+                    case sf::Keyboard::W: {
                         shape.rotate(Direction::RIGHT);
                         coords = shape.getTileCoords();
                         if (isCoordOccupied(coords, {0, 0})) {
@@ -108,7 +109,8 @@ void Game::resetShape() {
 void Game::assignShapesToGenerator() {
     // ####
     std::vector<Coord> longCoords;
-    Shape longShape;
+    auto tileSize = board.getTileSize();
+    Shape longShape(tileSize);
     longCoords.push_back({-1, 0});
     longCoords.push_back({0, 0});
     longCoords.push_back({1, 0});
@@ -119,7 +121,7 @@ void Game::assignShapesToGenerator() {
     // ##
     // ##
     std::vector<Coord> boxCoords;
-    Shape boxShape;
+    Shape boxShape(tileSize);
     boxCoords.push_back({-1, 0});
     boxCoords.push_back({0, 0});
     boxCoords.push_back({-1, 1});
@@ -131,7 +133,7 @@ void Game::assignShapesToGenerator() {
     //  ##
     // ##
     std::vector<Coord> zigZagCoordsRight;
-    Shape zigZagShapeRight;
+    Shape zigZagShapeRight(tileSize);
     zigZagCoordsRight.push_back({-1, 1});
     zigZagCoordsRight.push_back({0, 1});
     zigZagCoordsRight.push_back({0, 0});
@@ -142,7 +144,7 @@ void Game::assignShapesToGenerator() {
     // ##
     //  ##
     std::vector<Coord> zigZagCoordsLeft;
-    Shape zigZagShapeLeft;
+    Shape zigZagShapeLeft(tileSize);
     zigZagCoordsLeft.push_back({-1, 0});
     zigZagCoordsLeft.push_back({0, 1});
     zigZagCoordsLeft.push_back({0, 0});
@@ -153,7 +155,7 @@ void Game::assignShapesToGenerator() {
     // ###
     //  #
     std::vector<Coord> podiumCoords;
-    Shape podiumShape;
+    Shape podiumShape(tileSize);
     podiumCoords.push_back({-1, 0});
     podiumCoords.push_back({0, 0});
     podiumCoords.push_back({1, 0});
@@ -164,7 +166,7 @@ void Game::assignShapesToGenerator() {
     // ###
     // #
     std::vector<Coord> LCoordsLeft;
-    Shape LShapeLeft;
+    Shape LShapeLeft(tileSize);
     LCoordsLeft.push_back({-1, 1});
     LCoordsLeft.push_back({-1, 0});
     LCoordsLeft.push_back({0, 0});
@@ -175,7 +177,7 @@ void Game::assignShapesToGenerator() {
     // ###
     //   #
     std::vector<Coord> LCoordsRight;
-    Shape LShapeRight;
+    Shape LShapeRight(tileSize);
     LCoordsRight.push_back({-1, 0});
     LCoordsRight.push_back({0, 0});
     LCoordsRight.push_back({1, 0});
@@ -232,8 +234,13 @@ void Game::endGame() {
     stopPanel.setContentText("Your score:\n\n" + std::to_string(score) + "\n\nR -> Restart");
 }
 
-Game::Game() : window(sf::VideoMode(winWidth, winHeight), "Cetris", sf::Style::Close), board(width, height),
-               stepManager(800) {
+Game::Game() : width(10), height(16), score(0), clears(0), isStopped(false),
+               board(width, height), shape(30), stepManager(800) {
+    unsigned tileSize = 30;
+    unsigned barHeight = 50;
+    unsigned winWidth = (width + 1) * tileSize;
+    unsigned winHeight = height * tileSize + tileSize / 2 + barHeight;
+    window.create(sf::VideoMode(winWidth, winHeight), "Cetris", sf::Style::Close);
     assignShapesToGenerator();
     board.setTileSize(tileSize);
     if (!font.loadFromFile("../Fleftex_M.ttf")) {

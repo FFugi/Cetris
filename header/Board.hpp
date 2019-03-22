@@ -15,13 +15,15 @@
 
 class Board : public sf::Drawable, public sf::Transformable {
 public:
-    Board(int width, int height) {
+    Board(int width, int height) : tileSize(30), outlineThickness(4) {
         this->height = height;
         this->width = width;
         clear();
     }
 
     void setTileSize(unsigned size);
+
+    unsigned getTileSize();
 
     void setField(Coord coords, bool value);
 
@@ -39,8 +41,8 @@ private:
 
     bool areCoordsOk(Coord coords) const;
 
-    unsigned tileSize = 30;
-    unsigned outlineThickness = 4;
+    unsigned tileSize;
+    unsigned outlineThickness;
     int width;
     int height;
     std::map<Coord, bool> fields;

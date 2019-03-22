@@ -4,7 +4,7 @@
 
 #include "StopPanel.hpp"
 
-StopPanel::StopPanel() {
+StopPanel::StopPanel() : outlineThickness(10) {
     header.setString("Header");
     content.setString("Content");
     header.setCharacterSize(24);

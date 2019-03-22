@@ -10,7 +10,8 @@
 
 class Shape : public sf::Drawable, public sf::Transformable {
 public:
-    Shape() {
+    Shape(unsigned tileSize) : coord({0, 0}), tileSize(tileSize),
+                               isRotatable(true), outlineThickness(6) {
         tiles.push_back({-1, 0});
         tiles.push_back({0, 0});
         tiles.push_back({1, 0});
@@ -38,11 +39,11 @@ public:
     const std::vector<Coord> getTileCoords();
 
 private:
-    Coord coord = {0, 0};
+    Coord coord;
     std::vector<Coord> tiles;
-    unsigned tileSize = 30;
-    bool isRotatable = true;
-    int outlineThickness = 6;
+    unsigned tileSize;
+    bool isRotatable;
+    int outlineThickness;
 
     virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
 };

@@ -114,3 +114,7 @@ void Board::clear() {
         }
     }
 }
+
+unsigned Board::getTileSize() {
+    return tileSize;
+}

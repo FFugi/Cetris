@@ -25,7 +25,7 @@ private:
     sf::Text content;
     sf::RectangleShape outer;
     sf::RectangleShape inner;
-    unsigned outlineThickness = 10;
+    unsigned outlineThickness;
 
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 };
