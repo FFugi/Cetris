@@ -12,10 +12,7 @@ class Tetromino : public sf::Drawable, public sf::Transformable {
 public:
     Tetromino(unsigned tileSize = 30) : coord({0, 0}), tileSize(tileSize),
                                     isRotatable(true), outlineThickness(6) {
-        tiles.push_back({-1, 0});
         tiles.push_back({0, 0});
-        tiles.push_back({1, 0});
-        tiles.push_back({2, 0});
     }
 
     void rotate(RotationDir rotation);

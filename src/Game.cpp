@@ -116,7 +116,7 @@ void Game::assignTetrominosToGenerator() {
     std::vector<Coord> iCoords = {{-1, 0}, {0, 0}, {1, 0}, {2, 0}};
     Tetromino i(tileSize);
     i.setTileCoords(iCoords);
-    generator.addTetrominoCoords("long", i);
+    generator.addTetrominoCoords("I", i);
 
     // ##
     // ##
@@ -124,42 +124,42 @@ void Game::assignTetrominosToGenerator() {
     Tetromino o(tileSize);
     o.setRotatable(false);
     o.setTileCoords(oCoords);
-    generator.addTetrominoCoords("box", o);
+    generator.addTetrominoCoords("O", o);
 
     //  ##
     // ##
     std::vector<Coord> sCoords = {{-1, 1}, {0, 1}, {0, 0}, {1, 0}};
     Tetromino s(tileSize);
     s.setTileCoords(sCoords);
-    generator.addTetrominoCoords("zigZagRight", s);
+    generator.addTetrominoCoords("S", s);
 
     // ##
     //  ##
     std::vector<Coord> zCoords = {{-1, 0}, {0, 1}, {0, 0}, {1, 1}};
     Tetromino z(tileSize);
     z.setTileCoords(zCoords);
-    generator.addTetrominoCoords("zigZagLeft", z);
+    generator.addTetrominoCoords("Z", z);
 
     // ###
     //  #
     std::vector<Coord> tCoords = {{-1, 0}, {0, 0}, {1, 0}, {0, 1}};
     Tetromino t(tileSize);
     t.setTileCoords(tCoords);
-    generator.addTetrominoCoords("podium", t);
+    generator.addTetrominoCoords("T", t);
 
     // ###
     // #
     std::vector<Coord> lCoords = {{-1, 1}, {-1, 0}, {0, 0}, {1, 0}};
     Tetromino l(tileSize);
     l.setTileCoords(lCoords);
-    generator.addTetrominoCoords("LLeft", l);
+    generator.addTetrominoCoords("L", l);
 
     // ###
     //   #
     std::vector<Coord> jCoords = {{-1, 0}, {0, 0}, {1, 0}, {1, 1}};
     Tetromino j(tileSize);
     j.setTileCoords(jCoords);
-    generator.addTetrominoCoords("LRight", j);
+    generator.addTetrominoCoords("J", j);
 }
 
 bool Game::doStep() {
