@@ -13,15 +13,34 @@
 #include "Structs.hpp"
 #include "Tetromino.hpp"
 
+
+/**
+ * Class which contains possible tetrominos and can generate ones randomly
+ * or by given name
+ */
 class TetrominoGenerator {
 public:
     TetrominoGenerator() = default;
 
+    /**
+     * Gets random tetromino
+     * @return generated tetromino
+     */
     Tetromino getRandomTetromino() const;
 
+    /**
+     * Gets tetromino basing on given name
+     * @param name - name of tetromino
+     * @return generated tetromino
+     */
     Tetromino getTetrominoByName(std::string &name) const;
 
-    void addTetrominoCoords(const std::string &name, const Tetromino &shape);
+    /**
+     * Adds possible tetromino to base
+     * @param name - name of tetromino
+     * @param tetromino - given tetromino
+     */
+    void addTetrominoCoords(const std::string &name, const Tetromino &tetromino);
 
 private:
     std::map<std::string, Tetromino> tetrominos;

@@ -22,6 +22,6 @@ Tetromino TetrominoGenerator::getTetrominoByName(std::string &name) const {
     return tetrominos.at(name);
 }
 
-void TetrominoGenerator::addTetrominoCoords(const std::string &name, const Tetromino &shape) {
-    tetrominos.insert_or_assign(name, shape);
+void TetrominoGenerator::addTetrominoCoords(const std::string &name, const Tetromino &tetromino) {
+    tetrominos.insert_or_assign(name, tetromino);
 }

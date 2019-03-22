@@ -48,46 +48,71 @@ private:
 
     void pollEvents();
 
+    /**
+     * Moves tetromino down if possible, if not places it in the board,
+     * generates new tetromino and checks if game is finished
+     * @return true if tetromino was placed on board, otherwise false
+     */
     bool doStep();
 
+    /**
+     * Calculates how much fields differs from tetromino to its placement in board
+     * based on current tetromino position
+     * @return
+     */
     unsigned getPlacementOffset();
 
+    /**
+     * Updates ghost tetromino position
+     */
     void updateGhost();
 
+    /**
+     * Assigns possible tetrominos to tetromino generator
+     */
     void assignTetrominosToGenerator();
 
+    /**
+     * Checks if given vector of coords will collide with anything on the board
+     * or will fit to the board after moving given offset
+     * @param tiles - vector of coords to check
+     * @param offset - offset of coords
+     * @return true if will collide, false if not
+     */
     bool isCoordOccupied(const std::vector<Coord> &tiles, const Coord offset) const;
 
+    /**
+     * Appends given vector of coords to board
+     * @param coords - vector of coords
+     */
     void setTiles(const std::vector<Coord> &coords);
 
+    /**
+     * Restarts step-clock, gets new tetromino
+     */
     void resetTetromino();
 
+    /**
+     * Stops game, shows end-game panel
+     */
     void endGame();
 
+    /**
+     * Restarts game - clears board, score and clear count
+     */
     void restartGame();
 
-    void moveTetromino(Direction dir) {
-        switch(dir){
-            case Direction::DOWN:
-                tetromino.doStep();
-                break;
-            case Direction::LEFT:
-                tetromino.slide(-1);
-                break;
-            case Direction::RIGHT:
-                tetromino.slide(1);
-                break;
-            default:
-                break;
-        }
-        updateGhost();
-    }
+    /**
+     * Moves tetromino in given direction
+     * @param dir - direction in which tetromino will move
+     */
+    void moveTetromino(Direction dir);
 
-    void rotateTetromino(RotationDir rot) {
-        tetromino.rotate(rot);
-        ghostTetromino.rotate(rot);
-        updateGhost();
-    }
+    /**
+     * Rotates tetromino in given rotation type
+     * @param rot - rotation type
+     */
+    void rotateTetromino(RotationDir rot);
 };
 
 

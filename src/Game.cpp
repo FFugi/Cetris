@@ -267,3 +267,26 @@ void Game::updateGhost() {
     coord.y += offset;
     ghostTetromino.setCoord(coord);
 }
+
+void Game::rotateTetromino(RotationDir rot) {
+    tetromino.rotate(rot);
+    ghostTetromino.rotate(rot);
+    updateGhost();
+}
+
+void Game::moveTetromino(Direction dir) {
+    switch(dir){
+        case Direction::DOWN:
+            tetromino.doStep();
+            break;
+        case Direction::LEFT:
+            tetromino.slide(-1);
+            break;
+        case Direction::RIGHT:
+            tetromino.slide(1);
+            break;
+        default:
+            break;
+    }
+    updateGhost();
+}
