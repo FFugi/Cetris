@@ -6,11 +6,11 @@
 
 #include "Shape.hpp"
 
-void Shape::rotate(Direction direction) {
+void Shape::rotate(RotationDir rotation) {
     if (isRotatable) {
         for (auto &coord : tiles) {
             Coord newCoord;
-            if (direction == Direction::LEFT) {
+            if (rotation == RotationDir::COUNTER_CLOCKWISE) {
                 newCoord.x = coord.y;
                 newCoord.y = -coord.x;
             } else {
@@ -74,4 +74,10 @@ void Shape::draw(sf::RenderTarget &target, sf::RenderStates states) const {
 
 void Shape::setTileCoords(std::vector<Coord> coords) {
     this->tiles = std::move(coords);
+}
+
+void Shape::setOutlineThickness(unsigned thickness) {
+    if (2 * thickness <= tileSize) {
+        outlineThickness = thickness;
+    }
 }

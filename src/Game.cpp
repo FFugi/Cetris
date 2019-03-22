@@ -18,6 +18,7 @@ void Game::run() {
         window.clear(sf::Color::Black);
 
         window.draw(board);
+        window.draw(ghostShape);
         window.draw(shape);
         window.draw(infoPanel);
         if (isStopped) {
@@ -39,21 +40,21 @@ void Game::pollEvents() {
                 switch (event.key.code) {
                     case sf::Keyboard::A: {
                         if (!isCoordOccupied(coords, {-1, 0})) {
-                            shape.slide(-1);
+                            moveShape(Direction::LEFT);
                         }
                         break;
                     }
                     case sf::Keyboard::D: {
                         if (!isCoordOccupied(coords, {1, 0})) {
-                            shape.slide(1);
+                            moveShape(Direction::RIGHT);
                         }
                         break;
                     }
                     case sf::Keyboard::W: {
-                        shape.rotate(Direction::RIGHT);
+                        rotateShape(RotationDir::CLOCKWISE);
                         coords = shape.getTileCoords();
                         if (isCoordOccupied(coords, {0, 0})) {
-                            shape.rotate(Direction::LEFT);
+                            rotateShape(RotationDir::COUNTER_CLOCKWISE);
                         }
                         break;
                     }
@@ -102,8 +103,11 @@ void Game::setTiles(const std::vector<Coord> &coords) {
 
 void Game::resetShape() {
     clock.restart();
-    this->shape = generator.getRandomShape();
-    this->shape.setCoord({static_cast<int>(width) / 2, 0});
+    shape = generator.getRandomShape();
+    shape.setCoord({static_cast<int>(width) / 2, 0});
+    ghostShape = shape;
+    ghostShape.setOutlineThickness(12);
+    updateGhost();
 }
 
 void Game::assignShapesToGenerator() {
@@ -194,9 +198,10 @@ bool Game::doStep() {
                 break;
         }
         infoPanel.setScore(score);
+        updateGhost();
         return true;
     }
-    shape.doStep();
+    moveShape(Direction::DOWN);
     return false;
 }
 

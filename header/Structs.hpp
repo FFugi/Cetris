@@ -22,7 +22,14 @@ struct Coord {
 
 enum class Direction {
     LEFT,
-    RIGHT
+    RIGHT,
+    UP,
+    DOWN
+};
+
+enum class RotationDir {
+    CLOCKWISE,
+    COUNTER_CLOCKWISE
 };
 
 #endif //CETRIS_STRUCTS_HPP

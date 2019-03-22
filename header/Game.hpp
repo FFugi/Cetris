@@ -37,12 +37,29 @@ private:
     StopPanel stopPanel;
     Board board;
     Shape shape;
+    Shape ghostShape;
     ShapeGenerator generator;
     StepManager stepManager;
 
     void pollEvents();
 
     bool doStep();
+
+    unsigned getPlacementOffset() {
+        auto coords = shape.getTileCoords();
+        int val = 1;
+        while (!isCoordOccupied(coords, {0, val})) {
+            val++;
+        }
+        return static_cast<unsigned>(val - 1);
+    }
+
+    void updateGhost() {
+        unsigned offset = getPlacementOffset();
+        auto coord = shape.getCoord();
+        coord.y += offset;
+        ghostShape.setCoord(coord);
+    }
 
     void assignShapesToGenerator();
 
@@ -55,6 +72,29 @@ private:
     void endGame();
 
     void restartGame();
+
+    void moveShape(Direction dir) {
+        switch(dir){
+            case Direction::DOWN:
+                shape.doStep();
+                break;
+            case Direction::LEFT:
+                shape.slide(-1);
+                break;
+            case Direction::RIGHT:
+                shape.slide(1);
+                break;
+            default:
+                break;
+        }
+        updateGhost();
+    }
+
+    void rotateShape(RotationDir rot) {
+        shape.rotate(rot);
+        ghostShape.rotate(rot);
+        updateGhost();
+    }
 };
 
 
