@@ -4,6 +4,7 @@
 
 #include "Game.hpp"
 
+
 void Game::run() {
     clock.restart();
     resetShape();
@@ -257,6 +258,9 @@ Game::Game() : window(sf::VideoMode(winWidth, winHeight), "Cetris", sf::Style::C
 }
 
 void Game::restartGame() {
+    infoPanel.setScore(0);
+    infoPanel.setClears(0);
+    stepManager.updateStep(0);
     board.clear();
     resetShape();
     isStopped = false;

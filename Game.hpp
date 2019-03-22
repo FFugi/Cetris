@@ -14,6 +14,7 @@
 #include "StopPanel.hpp"
 #include "StepManager.hpp"
 
+
 class Game {
 public:
     Game();
