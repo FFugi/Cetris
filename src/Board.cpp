@@ -9,14 +9,14 @@ void Board::setTileSize(unsigned size) {
 }
 
 void Board::setField(Coord coords, bool value) {
-    if (!areCoordsOk(coords)) {
+    if (!doCoordsFit(coords)) {
         throw std::out_of_range("Width or height is too high!");
     }
     fields.insert_or_assign(coords, value);
 }
 
 bool Board::getField(Coord coords) const {
-    if (!areCoordsOk(coords)) {
+    if (!doCoordsFit(coords)) {
         throw std::out_of_range("Width or height is too high!");
     }
     return fields.at(coords);
@@ -103,7 +103,7 @@ void Board::draw(sf::RenderTarget &target, sf::RenderStates states) const {
     }
 }
 
-bool Board::areCoordsOk(Coord coords) const {
+bool Board::doCoordsFit(Coord coords) const {
     return coords.x < width && coords.y < height && coords.x >= 0 && coords.y >= 0;
 }
 
