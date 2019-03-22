@@ -107,83 +107,55 @@ void Game::resetShape() {
 }
 
 void Game::assignShapesToGenerator() {
-    // ####
-    std::vector<Coord> longCoords;
     auto tileSize = board.getTileSize();
+    // ####
+    std::vector<Coord> longCoords = {{-1, 0}, {0, 0}, {1, 0}, {2, 0}};
     Shape longShape(tileSize);
-    longCoords.push_back({-1, 0});
-    longCoords.push_back({0, 0});
-    longCoords.push_back({1, 0});
-    longCoords.push_back({2, 0});
     longShape.setTileCoords(longCoords);
     generator.addShapeCoords("long", longShape);
 
     // ##
     // ##
-    std::vector<Coord> boxCoords;
+    std::vector<Coord> boxCoords = {{-1, 0}, {0, 0}, {-1, 1}, {0, 1}};
     Shape boxShape(tileSize);
-    boxCoords.push_back({-1, 0});
-    boxCoords.push_back({0, 0});
-    boxCoords.push_back({-1, 1});
-    boxCoords.push_back({0, 1});
     boxShape.setRotatable(false);
     boxShape.setTileCoords(boxCoords);
     generator.addShapeCoords("box", boxShape);
 
     //  ##
     // ##
-    std::vector<Coord> zigZagCoordsRight;
+    std::vector<Coord> zigZagCoordsRight = {{-1, 1}, {0, 1}, {0, 0}, {1, 0}};
     Shape zigZagShapeRight(tileSize);
-    zigZagCoordsRight.push_back({-1, 1});
-    zigZagCoordsRight.push_back({0, 1});
-    zigZagCoordsRight.push_back({0, 0});
-    zigZagCoordsRight.push_back({1, 0});
     zigZagShapeRight.setTileCoords(zigZagCoordsRight);
     generator.addShapeCoords("zigZagRight", zigZagShapeRight);
 
     // ##
     //  ##
-    std::vector<Coord> zigZagCoordsLeft;
+    std::vector<Coord> zigZagCoordsLeft = {{-1, 0}, {0, 1}, {0, 0}, {1, 1}};
     Shape zigZagShapeLeft(tileSize);
-    zigZagCoordsLeft.push_back({-1, 0});
-    zigZagCoordsLeft.push_back({0, 1});
-    zigZagCoordsLeft.push_back({0, 0});
-    zigZagCoordsLeft.push_back({1, 1});
     zigZagShapeLeft.setTileCoords(zigZagCoordsLeft);
     generator.addShapeCoords("zigZagLeft", zigZagShapeLeft);
 
     // ###
     //  #
-    std::vector<Coord> podiumCoords;
+    std::vector<Coord> podiumCoords = {{-1, 0}, {0, 0}, {1, 0}, {0, 1}};
     Shape podiumShape(tileSize);
-    podiumCoords.push_back({-1, 0});
-    podiumCoords.push_back({0, 0});
-    podiumCoords.push_back({1, 0});
-    podiumCoords.push_back({0, 1});
     podiumShape.setTileCoords(podiumCoords);
     generator.addShapeCoords("podium", podiumShape);
 
     // ###
     // #
-    std::vector<Coord> LCoordsLeft;
-    Shape LShapeLeft(tileSize);
-    LCoordsLeft.push_back({-1, 1});
-    LCoordsLeft.push_back({-1, 0});
-    LCoordsLeft.push_back({0, 0});
-    LCoordsLeft.push_back({1, 0});
-    LShapeLeft.setTileCoords(LCoordsLeft);
-    generator.addShapeCoords("LLeft", LShapeLeft);
+    std::vector<Coord> LCoordsLeft = {{-1, 1}, {-1, 0}, {0, 0}, {1, 0}};
+    Shape lShapeLeft(tileSize);
+    lShapeLeft.setTileCoords(LCoordsLeft);
+    generator.addShapeCoords("LLeft", lShapeLeft);
 
     // ###
     //   #
-    std::vector<Coord> LCoordsRight;
-    Shape LShapeRight(tileSize);
-    LCoordsRight.push_back({-1, 0});
-    LCoordsRight.push_back({0, 0});
-    LCoordsRight.push_back({1, 0});
-    LCoordsRight.push_back({1, 1});
-    LShapeRight.setTileCoords(LCoordsRight);
-    generator.addShapeCoords("LRight", LShapeRight);
+    std::vector<Coord> LCoordsRight = {{-1, 0}, {0, 0}, {1, 0}, {1, 1}};
+    Shape lShapeRight(tileSize);
+    lShapeRight.setTileCoords(LCoordsRight);
+    generator.addShapeCoords("LRight", lShapeRight);
 }
 
 bool Game::doStep() {
@@ -234,7 +206,7 @@ void Game::endGame() {
     stopPanel.setContentText("Your score:\n\n" + std::to_string(score) + "\n\nR -> Restart");
 }
 
-Game::Game() : width(10), height(16), score(0), clears(0), isStopped(false),
+Game::Game() : width(10), height(20), score(0), clears(0), isStopped(false),
                board(width, height), shape(30), stepManager(800) {
     unsigned tileSize = 30;
     unsigned barHeight = 50;
@@ -262,6 +234,8 @@ Game::Game() : width(10), height(16), score(0), clears(0), isStopped(false),
     stepManager.addStep({15, 500});
     stepManager.addStep({25, 400});
     stepManager.addStep({35, 300});
+    stepManager.addStep({50, 200});
+    stepManager.addStep({75, 100});
 }
 
 void Game::restartGame() {

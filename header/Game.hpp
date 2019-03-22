@@ -24,8 +24,8 @@ public:
 private:
     unsigned width;
     unsigned height;
-    int score;
-    int clears;
+    unsigned score;
+    unsigned clears;
     bool isStopped;
 
     sf::Event event;
