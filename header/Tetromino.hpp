@@ -2,15 +2,15 @@
 // Created by ffugi on 13.02.19.
 //
 
-#ifndef CETRIS_SHAPE_HPP
-#define CETRIS_SHAPE_HPP
+#ifndef CETRIS_TETROMINO_HPP
+#define CETRIS_TETROMINO_HPP
 
 #include <SFML/Graphics.hpp>
 #include "Structs.hpp"
 
-class Shape : public sf::Drawable, public sf::Transformable {
+class Tetromino : public sf::Drawable, public sf::Transformable {
 public:
-    Shape(unsigned tileSize = 30) : coord({0, 0}), tileSize(tileSize),
+    Tetromino(unsigned tileSize = 30) : coord({0, 0}), tileSize(tileSize),
                                     isRotatable(true), outlineThickness(6) {
         tiles.push_back({-1, 0});
         tiles.push_back({0, 0});
@@ -51,4 +51,4 @@ private:
 };
 
 
-#endif //CETRIS_SHAPE_HPP
+#endif //CETRIS_TETROMINO_HPP

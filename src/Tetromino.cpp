@@ -4,9 +4,9 @@
 // Created by ffugi on 13.02.19.
 //
 
-#include "Shape.hpp"
+#include "Tetromino.hpp"
 
-void Shape::rotate(RotationDir rotation) {
+void Tetromino::rotate(RotationDir rotation) {
     if (isRotatable) {
         for (auto &coord : tiles) {
             Coord newCoord;
@@ -22,36 +22,36 @@ void Shape::rotate(RotationDir rotation) {
     }
 }
 
-void Shape::setTileSize(unsigned size) {
+void Tetromino::setTileSize(unsigned size) {
     tileSize = size;
 }
 
-void Shape::doStep() {
+void Tetromino::doStep() {
     coord.y++;
 }
 
-void Shape::slide(int position) {
+void Tetromino::slide(int position) {
     coord.x += position;
 }
 
-void Shape::setCoord(Coord coord) {
+void Tetromino::setCoord(Coord coord) {
     this->coord = coord;
 }
 
-void Shape::setRotatable(bool value) {
+void Tetromino::setRotatable(bool value) {
     isRotatable = value;
 }
 
-void Shape::updateTilePos(sf::RectangleShape &tile, Coord offset) const {
+void Tetromino::updateTilePos(sf::RectangleShape &tile, Coord offset) const {
     tile.setPosition(tileSize / 2 + outlineThickness + (coord.x + offset.x) * tileSize,
                      outlineThickness + (coord.y + offset.y) * tileSize);
 }
 
-Coord Shape::getCoord() {
+Coord Tetromino::getCoord() {
     return coord;
 }
 
-const std::vector<Coord> Shape::getTileCoords() {
+const std::vector<Coord> Tetromino::getTileCoords() {
     std::vector<Coord> coords;
     for (auto coord : tiles) {
         coords.push_back({coord.x + this->coord.x, coord.y + this->coord.y});
@@ -59,7 +59,7 @@ const std::vector<Coord> Shape::getTileCoords() {
     return coords;
 }
 
-void Shape::draw(sf::RenderTarget &target, sf::RenderStates states) const {
+void Tetromino::draw(sf::RenderTarget &target, sf::RenderStates states) const {
     states.transform *= getTransform();
     sf::RectangleShape tile(sf::Vector2f(tileSize - 2 * outlineThickness, tileSize - 2 * outlineThickness));
     tile.setFillColor(sf::Color::White);
@@ -72,11 +72,11 @@ void Shape::draw(sf::RenderTarget &target, sf::RenderStates states) const {
     }
 }
 
-void Shape::setTileCoords(std::vector<Coord> coords) {
+void Tetromino::setTileCoords(std::vector<Coord> coords) {
     this->tiles = std::move(coords);
 }
 
-void Shape::setOutlineThickness(unsigned thickness) {
+void Tetromino::setOutlineThickness(unsigned thickness) {
     if (2 * thickness <= tileSize) {
         outlineThickness = thickness;
     }

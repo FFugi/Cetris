@@ -8,7 +8,7 @@
 
 void Game::run() {
     clock.restart();
-    resetShape();
+    resetTetromino();
     while (window.isOpen()) {
         pollEvents();
 
@@ -18,8 +18,8 @@ void Game::run() {
         window.clear(sf::Color::Black);
 
         window.draw(board);
-        window.draw(ghostShape);
-        window.draw(shape);
+        window.draw(ghostTetromino);
+        window.draw(tetromino);
         window.draw(infoPanel);
         if (isStopped) {
             window.draw(stopPanel);
@@ -36,25 +36,25 @@ void Game::pollEvents() {
         }
         if (event.type == sf::Event::KeyPressed) {
             if (!isStopped) {
-                auto coords = shape.getTileCoords();
+                auto coords = tetromino.getTileCoords();
                 switch (event.key.code) {
                     case sf::Keyboard::A: {
                         if (!isCoordOccupied(coords, {-1, 0})) {
-                            moveShape(Direction::LEFT);
+                            moveTetromino(Direction::LEFT);
                         }
                         break;
                     }
                     case sf::Keyboard::D: {
                         if (!isCoordOccupied(coords, {1, 0})) {
-                            moveShape(Direction::RIGHT);
+                            moveTetromino(Direction::RIGHT);
                         }
                         break;
                     }
                     case sf::Keyboard::W: {
-                        rotateShape(RotationDir::CLOCKWISE);
-                        coords = shape.getTileCoords();
+                        rotateTetromino(RotationDir::CLOCKWISE);
+                        coords = tetromino.getTileCoords();
                         if (isCoordOccupied(coords, {0, 0})) {
-                            rotateShape(RotationDir::COUNTER_CLOCKWISE);
+                            rotateTetromino(RotationDir::COUNTER_CLOCKWISE);
                         }
                         break;
                     }
@@ -101,74 +101,74 @@ void Game::setTiles(const std::vector<Coord> &coords) {
     }
 }
 
-void Game::resetShape() {
+void Game::resetTetromino() {
     clock.restart();
-    shape = generator.getRandomShape();
-    shape.setCoord({static_cast<int>(width) / 2, 0});
-    ghostShape = shape;
-    ghostShape.setOutlineThickness(12);
+    tetromino = generator.getRandomTetromino();
+    tetromino.setCoord({static_cast<int>(width) / 2, 0});
+    ghostTetromino = tetromino;
+    ghostTetromino.setOutlineThickness(12);
     updateGhost();
 }
 
-void Game::assignShapesToGenerator() {
+void Game::assignTetrominosToGenerator() {
     auto tileSize = board.getTileSize();
     // ####
-    std::vector<Coord> longCoords = {{-1, 0}, {0, 0}, {1, 0}, {2, 0}};
-    Shape longShape(tileSize);
-    longShape.setTileCoords(longCoords);
-    generator.addShapeCoords("long", longShape);
+    std::vector<Coord> iCoords = {{-1, 0}, {0, 0}, {1, 0}, {2, 0}};
+    Tetromino i(tileSize);
+    i.setTileCoords(iCoords);
+    generator.addTetrominoCoords("long", i);
 
     // ##
     // ##
-    std::vector<Coord> boxCoords = {{-1, 0}, {0, 0}, {-1, 1}, {0, 1}};
-    Shape boxShape(tileSize);
-    boxShape.setRotatable(false);
-    boxShape.setTileCoords(boxCoords);
-    generator.addShapeCoords("box", boxShape);
+    std::vector<Coord> oCoords = {{-1, 0}, {0, 0}, {-1, 1}, {0, 1}};
+    Tetromino o(tileSize);
+    o.setRotatable(false);
+    o.setTileCoords(oCoords);
+    generator.addTetrominoCoords("box", o);
 
     //  ##
     // ##
-    std::vector<Coord> zigZagCoordsRight = {{-1, 1}, {0, 1}, {0, 0}, {1, 0}};
-    Shape zigZagShapeRight(tileSize);
-    zigZagShapeRight.setTileCoords(zigZagCoordsRight);
-    generator.addShapeCoords("zigZagRight", zigZagShapeRight);
+    std::vector<Coord> sCoords = {{-1, 1}, {0, 1}, {0, 0}, {1, 0}};
+    Tetromino s(tileSize);
+    s.setTileCoords(sCoords);
+    generator.addTetrominoCoords("zigZagRight", s);
 
     // ##
     //  ##
-    std::vector<Coord> zigZagCoordsLeft = {{-1, 0}, {0, 1}, {0, 0}, {1, 1}};
-    Shape zigZagShapeLeft(tileSize);
-    zigZagShapeLeft.setTileCoords(zigZagCoordsLeft);
-    generator.addShapeCoords("zigZagLeft", zigZagShapeLeft);
+    std::vector<Coord> zCoords = {{-1, 0}, {0, 1}, {0, 0}, {1, 1}};
+    Tetromino z(tileSize);
+    z.setTileCoords(zCoords);
+    generator.addTetrominoCoords("zigZagLeft", z);
 
     // ###
     //  #
-    std::vector<Coord> podiumCoords = {{-1, 0}, {0, 0}, {1, 0}, {0, 1}};
-    Shape podiumShape(tileSize);
-    podiumShape.setTileCoords(podiumCoords);
-    generator.addShapeCoords("podium", podiumShape);
+    std::vector<Coord> tCoords = {{-1, 0}, {0, 0}, {1, 0}, {0, 1}};
+    Tetromino t(tileSize);
+    t.setTileCoords(tCoords);
+    generator.addTetrominoCoords("podium", t);
 
     // ###
     // #
-    std::vector<Coord> LCoordsLeft = {{-1, 1}, {-1, 0}, {0, 0}, {1, 0}};
-    Shape lShapeLeft(tileSize);
-    lShapeLeft.setTileCoords(LCoordsLeft);
-    generator.addShapeCoords("LLeft", lShapeLeft);
+    std::vector<Coord> lCoords = {{-1, 1}, {-1, 0}, {0, 0}, {1, 0}};
+    Tetromino l(tileSize);
+    l.setTileCoords(lCoords);
+    generator.addTetrominoCoords("LLeft", l);
 
     // ###
     //   #
-    std::vector<Coord> LCoordsRight = {{-1, 0}, {0, 0}, {1, 0}, {1, 1}};
-    Shape lShapeRight(tileSize);
-    lShapeRight.setTileCoords(LCoordsRight);
-    generator.addShapeCoords("LRight", lShapeRight);
+    std::vector<Coord> jCoords = {{-1, 0}, {0, 0}, {1, 0}, {1, 1}};
+    Tetromino j(tileSize);
+    j.setTileCoords(jCoords);
+    generator.addTetrominoCoords("LRight", j);
 }
 
 bool Game::doStep() {
     clock.restart();
-    auto coords = shape.getTileCoords();
+    auto coords = tetromino.getTileCoords();
     if (isCoordOccupied(coords, {0, 1})) {
         setTiles(coords);
-        resetShape();
-        if (isCoordOccupied(shape.getTileCoords(), {0, 0})) {
+        resetTetromino();
+        if (isCoordOccupied(tetromino.getTileCoords(), {0, 0})) {
             endGame();
         }
         // TODO score
@@ -201,7 +201,7 @@ bool Game::doStep() {
         updateGhost();
         return true;
     }
-    moveShape(Direction::DOWN);
+    moveTetromino(Direction::DOWN);
     return false;
 }
 
@@ -212,13 +212,13 @@ void Game::endGame() {
 }
 
 Game::Game() : width(10), height(20), score(0), clears(0), isStopped(false),
-               board(width, height), shape(30), stepManager(800) {
+               board(width, height), tetromino(30), stepManager(800) {
     unsigned tileSize = 30;
     unsigned barHeight = 50;
     unsigned winWidth = (width + 1) * tileSize;
     unsigned winHeight = height * tileSize + tileSize / 2 + barHeight;
     window.create(sf::VideoMode(winWidth, winHeight), "Cetris", sf::Style::Close);
-    assignShapesToGenerator();
+    assignTetrominosToGenerator();
     board.setTileSize(tileSize);
     if (!font.loadFromFile("../Fleftex_M.ttf")) {
         std::cerr << "Couldn't load font file Fleftex_M.ttf!" << std::endl;
@@ -248,12 +248,12 @@ void Game::restartGame() {
     infoPanel.setClears(0);
     stepManager.updateStep(0);
     board.clear();
-    resetShape();
+    resetTetromino();
     isStopped = false;
 }
 
 unsigned Game::getPlacementOffset() {
-    auto coords = shape.getTileCoords();
+    auto coords = tetromino.getTileCoords();
     int val = 1;
     while (!isCoordOccupied(coords, {0, val})) {
         val++;
@@ -263,7 +263,7 @@ unsigned Game::getPlacementOffset() {
 
 void Game::updateGhost() {
     unsigned offset = getPlacementOffset();
-    auto coord = shape.getCoord();
+    auto coord = tetromino.getCoord();
     coord.y += offset;
-    ghostShape.setCoord(coord);
+    ghostTetromino.setCoord(coord);
 }

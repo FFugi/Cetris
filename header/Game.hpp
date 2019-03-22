@@ -8,17 +8,22 @@
 
 #include <SFML/Graphics.hpp>
 #include "Board.hpp"
-#include "Shape.hpp"
-#include "ShapeGenerator.hpp"
+#include "Tetromino.hpp"
+#include "TetrominoGenerator.hpp"
 #include "InfoPanel.hpp"
 #include "StopPanel.hpp"
 #include "StepManager.hpp"
 
-
+/**
+ * Class which contains all game logic and components such as window, font etc.
+ */
 class Game {
 public:
     Game();
 
+    /**
+     * Runs the game until it's finished
+     */
     void run();
 
 private:
@@ -36,9 +41,9 @@ private:
     InfoPanel infoPanel;
     StopPanel stopPanel;
     Board board;
-    Shape shape;
-    Shape ghostShape;
-    ShapeGenerator generator;
+    Tetromino tetromino;
+    Tetromino ghostTetromino;
+    TetrominoGenerator generator;
     StepManager stepManager;
 
     void pollEvents();
@@ -49,28 +54,28 @@ private:
 
     void updateGhost();
 
-    void assignShapesToGenerator();
+    void assignTetrominosToGenerator();
 
     bool isCoordOccupied(const std::vector<Coord> &tiles, const Coord offset) const;
 
     void setTiles(const std::vector<Coord> &coords);
 
-    void resetShape();
+    void resetTetromino();
 
     void endGame();
 
     void restartGame();
 
-    void moveShape(Direction dir) {
+    void moveTetromino(Direction dir) {
         switch(dir){
             case Direction::DOWN:
-                shape.doStep();
+                tetromino.doStep();
                 break;
             case Direction::LEFT:
-                shape.slide(-1);
+                tetromino.slide(-1);
                 break;
             case Direction::RIGHT:
-                shape.slide(1);
+                tetromino.slide(1);
                 break;
             default:
                 break;
@@ -78,9 +83,9 @@ private:
         updateGhost();
     }
 
-    void rotateShape(RotationDir rot) {
-        shape.rotate(rot);
-        ghostShape.rotate(rot);
+    void rotateTetromino(RotationDir rot) {
+        tetromino.rotate(rot);
+        ghostTetromino.rotate(rot);
         updateGhost();
     }
 };
