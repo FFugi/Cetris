@@ -4,17 +4,22 @@
 
 #include "TetrominoGenerator.hpp"
 
-Tetromino TetrominoGenerator::getRandomTetromino() const {
+Tetromino TetrominoGenerator::getRandomTetromino() {
     // TODO better randomization
-    int shapeToReturn = static_cast<int>(rand() % tetrominos.size());
-    int iterator = 0;
-    std::string name;
-    for (const auto &shape : tetrominos) {
-        if (iterator == shapeToReturn) {
-            name = shape.first;
+    if (currentBag.empty()){
+        std::vector<std::string> names;
+        for (const auto &shape : tetrominos) {
+            names.push_back(shape.first);
         }
-        iterator++;
+        for (unsigned i = 0; i < 7; i++) {
+            unsigned long index = rand() % names.size();
+            currentBag.push(names.at(index));
+            names.erase(names.begin() + index);
+        }
     }
+
+    auto name = currentBag.top();
+    currentBag.pop();
     return tetrominos.at(name);
 }
 
