@@ -236,8 +236,8 @@ Game::Game() : width(10), height(20), props(new GameProperties(0, 0, 1)),
     stopPanel.setOrigin(125, 125);
     stopPanel.setPosition(winWidth / 2, winHeight / 2);
     // assign steps
-    stepManager->addStep({3, 800});
-    stepManager->addStep({5, 700});
+    stepManager->addStep({20, 800});
+    stepManager->addStep({40, 700});
     stepManager->addStep({60, 500});
     stepManager->addStep({80, 400});
     stepManager->addStep({100, 300});
