@@ -39,7 +39,6 @@ private:
     unsigned score;
     unsigned clears;
     unsigned level;
-    std::vector<std::shared_ptr<Observer>> observers;
     std::shared_ptr<StepManager> observable;
 };
 
