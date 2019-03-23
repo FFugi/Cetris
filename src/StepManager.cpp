@@ -2,6 +2,9 @@
 // Created by ffugi on 18.02.19.
 //
 
+#include <iostream>
+#include <StepManager.hpp>
+
 #include "StepManager.hpp"
 
 StepManager::StepManager(unsigned defaultStep)
@@ -26,4 +29,12 @@ void StepManager::updateStep(unsigned clearCount) {
 
 unsigned StepManager::getStep() const {
     return step;
+}
+
+unsigned StepManager::getLevel() const {
+    return currentIndex + 1;
+}
+
+void StepManager::reset() {
+    currentIndex = 0;
 }

@@ -19,15 +19,21 @@ void InfoPanel::setClears(const int value) {
                             std::to_string(value));
 }
 
+void InfoPanel::setLevel(const int value) {
+    levelText.setString("Level:  " + Helpers::getSpaces(numberBuffer - Helpers::digitsNumber(value)) +
+                            std::to_string(value));
+}
+
 void InfoPanel::draw(sf::RenderTarget &target, sf::RenderStates states) const {
     states.transform *= getTransform();
 
     target.draw(background, states);
     target.draw(scoreText, states);
     target.draw(linesText, states);
+    target.draw(levelText, states);
 }
 
-InfoPanel::InfoPanel() : outlineThickness(4), numberBuffer(5) {
+InfoPanel::InfoPanel() : outlineThickness(4), numberBuffer(7) {
     background.setSize(sf::Vector2f(100, 30));
     background.setFillColor(sf::Color::Black);
     background.setOutlineColor(sf::Color::White);
@@ -37,9 +43,12 @@ InfoPanel::InfoPanel() : outlineThickness(4), numberBuffer(5) {
     scoreText.setPosition(outlineThickness, outlineThickness);
     linesText.setCharacterSize(16);
     linesText.setPosition(outlineThickness, outlineThickness + 20);
+    levelText.setCharacterSize(16);
+    levelText.setPosition(outlineThickness, outlineThickness + 40);
 }
 
 void InfoPanel::setFont(const sf::Font &font) {
     scoreText.setFont(font);
     linesText.setFont(font);
+    levelText.setFont(font);
 }

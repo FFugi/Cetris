@@ -19,11 +19,14 @@ public:
 
     void setClears(int value);
 
+    void setLevel(int value);
+
     void setFont(const sf::Font &font);
 
 private:
     sf::Text scoreText;
     sf::Text linesText;
+    sf::Text levelText;
     sf::RectangleShape background;
     int outlineThickness;
     int numberBuffer;

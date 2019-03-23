@@ -177,24 +177,25 @@ bool Game::doStep() {
             clears++;
             infoPanel.setClears(clears);
             stepManager.updateStep(clears);
+            infoPanel.setLevel(stepManager.getLevel());
         }
         switch (lines) {
             case 0:
                 break;
             case 1:
-                score += 1;
+                score += 40;
                 break;
             case 2:
-                score += 5;
+                score += 100;
                 break;
             case 3:
-                score += 20;
+                score += 300;
                 break;
             case 4:
-                score += 40;
+                score += 1200;
                 break;
             default:
-                score += 40;
+                score += 1200;
                 break;
         }
         infoPanel.setScore(score);
@@ -214,7 +215,7 @@ void Game::endGame() {
 Game::Game() : width(10), height(20), score(0), clears(0), isStopped(false),
                board(width, height), tetromino(30), stepManager(800) {
     unsigned tileSize = 30;
-    unsigned barHeight = 50;
+    unsigned barHeight = 70;
     unsigned winWidth = (width + 1) * tileSize;
     unsigned winHeight = height * tileSize + tileSize / 2 + barHeight;
     window.create(sf::VideoMode(winWidth, winHeight), "Cetris", sf::Style::Close);
@@ -233,20 +234,24 @@ Game::Game() : width(10), height(20), score(0), clears(0), isStopped(false),
     stopPanel.setPosition(winWidth / 2, winHeight / 2);
     infoPanel.setScore(score);
     infoPanel.setClears(clears);
+    infoPanel.setLevel(1);
     // assign steps
-    stepManager.addStep({5, 800});
-    stepManager.addStep({10, 700});
-    stepManager.addStep({15, 500});
-    stepManager.addStep({25, 400});
-    stepManager.addStep({35, 300});
-    stepManager.addStep({50, 200});
-    stepManager.addStep({75, 100});
+    stepManager.addStep({20, 800});
+    stepManager.addStep({40, 700});
+    stepManager.addStep({60, 500});
+    stepManager.addStep({80, 400});
+    stepManager.addStep({100, 300});
+    stepManager.addStep({120, 200});
+    stepManager.addStep({140, 100});
 }
 
 void Game::restartGame() {
+    score = 0;
+    clears = 0;
+    stepManager.reset();
     infoPanel.setScore(0);
     infoPanel.setClears(0);
-    stepManager.updateStep(0);
+    infoPanel.setLevel(1);
     board.clear();
     resetTetromino();
     isStopped = false;

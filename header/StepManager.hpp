@@ -17,7 +17,11 @@ public:
 
     void updateStep(unsigned clearCount);
 
+    void reset();
+
     unsigned getStep() const;
+
+    unsigned getLevel() const;
 
 private:
     std::vector<std::pair<unsigned, unsigned>> stepTimes;
