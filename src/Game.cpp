@@ -12,7 +12,7 @@ void Game::run() {
     while (window.isOpen()) {
         pollEvents();
 
-        if (!isStopped && clock.getElapsedTime().asMilliseconds() > static_cast<int>(stepManager.getStep())) {
+        if (!isStopped && clock.getElapsedTime().asMilliseconds() > static_cast<int>(stepManager->getStep())) {
             doStep();
         }
         window.clear(sf::Color::Black);
@@ -20,7 +20,7 @@ void Game::run() {
         window.draw(board);
         window.draw(ghostTetromino);
         window.draw(tetromino);
-        window.draw(infoPanel);
+        window.draw(*infoPanel.get());
         if (isStopped) {
             window.draw(stopPanel);
         }
@@ -113,14 +113,14 @@ void Game::resetTetromino() {
 void Game::assignTetrominosToGenerator() {
     auto tileSize = board.getTileSize();
     // ####
-    std::vector<Coord> iCoords = {{-1, 0}, {0, 0}, {1, 0}, {2, 0}};
+    std::vector<Coord> iCoords = {{-1, 0}, {0,  0}, {1,  0}, {2,  0}};
     Tetromino i(tileSize);
     i.setTileCoords(iCoords);
     generator.addTetrominoCoords("I", i);
 
     // ##
     // ##
-    std::vector<Coord> oCoords = {{-1, 0}, {0, 0}, {-1, 1}, {0, 1}};
+    std::vector<Coord> oCoords = {{-1, 0}, {0,  0}, {-1, 1}, {0,  1}};
     Tetromino o(tileSize);
     o.setRotatable(false);
     o.setTileCoords(oCoords);
@@ -128,35 +128,35 @@ void Game::assignTetrominosToGenerator() {
 
     //  ##
     // ##
-    std::vector<Coord> sCoords = {{-1, 1}, {0, 1}, {0, 0}, {1, 0}};
+    std::vector<Coord> sCoords = {{-1, 1}, {0,  1}, {0,  0}, {1,  0}};
     Tetromino s(tileSize);
     s.setTileCoords(sCoords);
     generator.addTetrominoCoords("S", s);
 
     // ##
     //  ##
-    std::vector<Coord> zCoords = {{-1, 0}, {0, 1}, {0, 0}, {1, 1}};
+    std::vector<Coord> zCoords = {{-1, 0}, {0,  1}, {0,  0}, {1,  1}};
     Tetromino z(tileSize);
     z.setTileCoords(zCoords);
     generator.addTetrominoCoords("Z", z);
 
     // ###
     //  #
-    std::vector<Coord> tCoords = {{-1, 0}, {0, 0}, {1, 0}, {0, 1}};
+    std::vector<Coord> tCoords = {{-1, 0}, {0,  0}, {1,  0}, {0,  1}};
     Tetromino t(tileSize);
     t.setTileCoords(tCoords);
     generator.addTetrominoCoords("T", t);
 
     // ###
     // #
-    std::vector<Coord> lCoords = {{-1, 1}, {-1, 0}, {0, 0}, {1, 0}};
+    std::vector<Coord> lCoords = {{-1, 1}, {-1, 0}, {0,  0}, {1,  0}};
     Tetromino l(tileSize);
     l.setTileCoords(lCoords);
     generator.addTetrominoCoords("L", l);
 
     // ###
     //   #
-    std::vector<Coord> jCoords = {{-1, 0}, {0, 0}, {1, 0}, {1, 1}};
+    std::vector<Coord> jCoords = {{-1, 0}, {0,  0}, {1,  0}, {1,  1}};
     Tetromino j(tileSize);
     j.setTileCoords(jCoords);
     generator.addTetrominoCoords("J", j);
@@ -174,31 +174,27 @@ bool Game::doStep() {
         // TODO score
         const int lines = board.removeFullLines();
         if (lines > 0) {
-            clears++;
-            infoPanel.setClears(clears);
-            stepManager.updateStep(clears);
-            infoPanel.setLevel(stepManager.getLevel());
+            props->incrementClears();
         }
         switch (lines) {
             case 0:
                 break;
             case 1:
-                score += 40;
+                props->addToScore(40);
                 break;
             case 2:
-                score += 100;
+                props->addToScore(100);
                 break;
             case 3:
-                score += 300;
+                props->addToScore(300);
                 break;
             case 4:
-                score += 1200;
+                props->addToScore(1200);
                 break;
             default:
-                score += 1200;
+                props->addToScore(1200);
                 break;
         }
-        infoPanel.setScore(score);
         updateGhost();
         return true;
     }
@@ -209,11 +205,17 @@ bool Game::doStep() {
 void Game::endGame() {
     isStopped = true;
     stopPanel.setHeaderText("GAME OVER");
-    stopPanel.setContentText("Your score:\n\n" + std::to_string(score) + "\n\nR -> Restart");
+    stopPanel.setContentText("Your score:\n\n" + std::to_string(props->getScore()) + "\n\nR -> Restart");
 }
 
-Game::Game() : width(10), height(20), score(0), clears(0), isStopped(false),
-               board(width, height), tetromino(30), stepManager(800) {
+Game::Game() : width(10), height(20), props(new GameProperties(0, 0, 1)),
+               isStopped(false), board(width, height), tetromino(30),
+               stepManager(new StepManager(800, props)), infoPanel(new InfoPanel(props)) {
+    props->addObserver(stepManager);
+    props->addObserver(infoPanel);
+    props->setObservable(stepManager);
+    stepManager->addObserver(props);
+    props->notify();
     unsigned tileSize = 30;
     unsigned barHeight = 70;
     unsigned winWidth = (width + 1) * tileSize;
@@ -225,33 +227,28 @@ Game::Game() : width(10), height(20), score(0), clears(0), isStopped(false),
         std::cerr << "Couldn't load font file Fleftex_M.ttf!" << std::endl;
         exit(1);
     }
-    infoPanel.setFont(font);
+    infoPanel->setFont(font);
+    infoPanel->setDimensions(winWidth, barHeight);
+    infoPanel->setPosition(0, winHeight - barHeight);
+
     stopPanel.setFont(font);
-    infoPanel.setDimensions(winWidth, barHeight);
-    infoPanel.setPosition(0, winHeight - barHeight);
     stopPanel.setDimensions(250, 250);
     stopPanel.setOrigin(125, 125);
     stopPanel.setPosition(winWidth / 2, winHeight / 2);
-    infoPanel.setScore(score);
-    infoPanel.setClears(clears);
-    infoPanel.setLevel(1);
     // assign steps
-    stepManager.addStep({20, 800});
-    stepManager.addStep({40, 700});
-    stepManager.addStep({60, 500});
-    stepManager.addStep({80, 400});
-    stepManager.addStep({100, 300});
-    stepManager.addStep({120, 200});
-    stepManager.addStep({140, 100});
+    stepManager->addStep({3, 800});
+    stepManager->addStep({5, 700});
+    stepManager->addStep({60, 500});
+    stepManager->addStep({80, 400});
+    stepManager->addStep({100, 300});
+    stepManager->addStep({120, 200});
+    stepManager->addStep({140, 100});
 }
 
 void Game::restartGame() {
-    score = 0;
-    clears = 0;
-    stepManager.reset();
-    infoPanel.setScore(0);
-    infoPanel.setClears(0);
-    infoPanel.setLevel(1);
+    props->setScore(0);
+    props->setClears(0);
+    stepManager->reset();
     board.clear();
     resetTetromino();
     isStopped = false;
@@ -280,7 +277,7 @@ void Game::rotateTetromino(RotationDir rot) {
 }
 
 void Game::moveTetromino(Direction dir) {
-    switch(dir){
+    switch (dir) {
         case Direction::DOWN:
             tetromino.doStep();
             break;

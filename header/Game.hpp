@@ -13,6 +13,8 @@
 #include "InfoPanel.hpp"
 #include "StopPanel.hpp"
 #include "StepManager.hpp"
+#include "GameProperties.hpp"
+#include <memory>
 
 /**
  * Class which contains all game logic and components such as window, font etc.
@@ -29,8 +31,7 @@ public:
 private:
     unsigned width;
     unsigned height;
-    unsigned score;
-    unsigned clears;
+    std::shared_ptr<GameProperties> props;
     bool isStopped;
 
     sf::Event event;
@@ -38,13 +39,13 @@ private:
     sf::RenderWindow window;
     sf::Font font;
 
-    InfoPanel infoPanel;
     StopPanel stopPanel;
     Board board;
     Tetromino tetromino;
     Tetromino ghostTetromino;
     TetrominoGenerator generator;
-    StepManager stepManager;
+    std::shared_ptr<StepManager> stepManager;
+    std::shared_ptr<InfoPanel> infoPanel;
 
     void pollEvents();
 

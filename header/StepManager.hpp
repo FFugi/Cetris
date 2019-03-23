@@ -8,10 +8,15 @@
 
 #include <utility>
 #include <vector>
+#include <memory>
+#include "Observer.hpp"
+#include "GameProperties.hpp"
 
-class StepManager {
+class GameProperties;
+
+class StepManager : public Observer, public Observable {
 public:
-    explicit StepManager(unsigned defaultStep);
+    StepManager(unsigned defaultStep, std::shared_ptr<GameProperties> props);
 
     void addStep(std::pair<unsigned, unsigned> step);
 
@@ -23,7 +28,11 @@ public:
 
     unsigned getLevel() const;
 
+    // Observer method
+    void update() override;
+
 private:
+    std::shared_ptr<GameProperties> props;
     std::vector<std::pair<unsigned, unsigned>> stepTimes;
     unsigned defaultStep;
     unsigned step;

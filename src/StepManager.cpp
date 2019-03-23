@@ -7,9 +7,9 @@
 
 #include "StepManager.hpp"
 
-StepManager::StepManager(unsigned defaultStep)
-    : defaultStep(defaultStep), step(defaultStep), currentIndex(0) {
 
+StepManager::StepManager(unsigned defaultStep, std::shared_ptr<GameProperties> props)
+    : props(std::move(props)), defaultStep(defaultStep), step(defaultStep), currentIndex(0) {
 }
 
 void StepManager::addStep(std::pair<unsigned, unsigned> step) {
@@ -24,7 +24,11 @@ void StepManager::updateStep(unsigned clearCount) {
     while (currentIndex < stepTimes.size() - 1 && stepTimes[currentIndex].first <= clearCount) {
         currentIndex++;
     }
+    unsigned prevStep = step;
     step = stepTimes[currentIndex].second;
+    if (prevStep != step) {
+        notify();
+    }
 }
 
 unsigned StepManager::getStep() const {
@@ -38,3 +42,8 @@ unsigned StepManager::getLevel() const {
 void StepManager::reset() {
     currentIndex = 0;
 }
+
+void StepManager::update() {
+    updateStep(props->getClears());
+}
+
