@@ -41,6 +41,7 @@ unsigned StepManager::getLevel() const {
 
 void StepManager::reset() {
     currentIndex = 0;
+    notify();
 }
 
 void StepManager::update() {

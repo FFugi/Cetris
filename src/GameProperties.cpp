@@ -28,8 +28,10 @@ void GameProperties::addToScore(int value) {
 }
 
 void GameProperties::setScore(unsigned value) {
-    score = value;
-    notify();
+    if (value != score) {
+        score = value;
+        notify();
+    }
 }
 
 void GameProperties::incrementClears() {
@@ -38,8 +40,10 @@ void GameProperties::incrementClears() {
 }
 
 void GameProperties::setClears(unsigned value) {
-    clears = value;
-    notify();
+    if (value != clears) {
+        clears = value;
+        notify();
+    }
 }
 
 void GameProperties::update() {
@@ -50,4 +54,3 @@ void GameProperties::update() {
 void GameProperties::setObservable(std::shared_ptr<StepManager> observable) {
     this->observable = std::move(observable);
 }
-
