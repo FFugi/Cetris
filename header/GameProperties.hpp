@@ -9,6 +9,7 @@
 
 #include "Observable.hpp"
 #include "StepManager.hpp"
+#include "Tetromino.hpp"
 
 class StepManager;
 
@@ -22,6 +23,8 @@ public:
 
     unsigned getLevel();
 
+    Tetromino &getNextTetromino();
+
     void addToScore(int value);
 
     void setScore(unsigned value);
@@ -29,6 +32,8 @@ public:
     void incrementClears();
 
     void setClears(unsigned value);
+
+    void setNextTetromino(Tetromino value);
 
     // Observer methods
     void update() override;
@@ -39,6 +44,7 @@ private:
     unsigned score;
     unsigned clears;
     unsigned level;
+    Tetromino tetromino;
     std::shared_ptr<StepManager> observable;
 };
 

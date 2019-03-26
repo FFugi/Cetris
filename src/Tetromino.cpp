@@ -43,8 +43,8 @@ void Tetromino::setRotatable(bool value) {
 }
 
 void Tetromino::updateTilePos(sf::RectangleShape &tile, Coord offset) const {
-    tile.setPosition(tileSize / 2 + outlineThickness + (coord.x + offset.x) * tileSize,
-                     outlineThickness + (coord.y + offset.y) * tileSize);
+    tile.setPosition(this->offset.first + outlineThickness + (coord.x + offset.x) * tileSize,
+                     this->offset.second + outlineThickness + (coord.y + offset.y) * tileSize);
 }
 
 Coord Tetromino::getCoord() {
@@ -60,6 +60,7 @@ const std::vector<Coord> Tetromino::getTileCoords() {
 }
 
 void Tetromino::draw(sf::RenderTarget &target, sf::RenderStates states) const {
+    // TODO fix negative values
     states.transform *= getTransform();
     sf::RectangleShape tile(sf::Vector2f(tileSize - 2 * outlineThickness, tileSize - 2 * outlineThickness));
     tile.setFillColor(sf::Color::White);
@@ -80,4 +81,16 @@ void Tetromino::setOutlineThickness(unsigned thickness) {
     if (2 * thickness <= tileSize) {
         outlineThickness = thickness;
     }
+}
+
+void Tetromino::setOffset(std::pair<float, float> value) {
+    offset = value;
+}
+
+void Tetromino::setName(std::string &value) {
+    name = value;
+}
+
+std::string &Tetromino::getName() {
+    return name;
 }

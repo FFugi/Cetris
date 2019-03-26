@@ -54,3 +54,14 @@ void GameProperties::update() {
 void GameProperties::setObservable(std::shared_ptr<StepManager> observable) {
     this->observable = std::move(observable);
 }
+
+void GameProperties::setNextTetromino(Tetromino value) {
+    if (value.getName() != tetromino.getName()) {
+        tetromino = value;
+        notify();
+    }
+}
+
+Tetromino &GameProperties::getNextTetromino() {
+    return tetromino;
+}

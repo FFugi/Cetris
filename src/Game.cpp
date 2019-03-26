@@ -102,11 +102,15 @@ void Game::setTiles(const std::vector<Coord> &coords) {
 }
 
 void Game::resetTetromino() {
+    auto tileSize = board.getTileSize();
     clock.restart();
-    tetromino = generator.getRandomTetromino();
+    tetromino = generator.getNextTetromino();
     tetromino.setCoord({static_cast<int>(width) / 2, 0});
+    tetromino.setOffset({tileSize / 2, 0});
     ghostTetromino = tetromino;
     ghostTetromino.setOutlineThickness(12);
+    auto nextTetrominoName = generator.peekNextTetromino();
+    props->setNextTetromino(generator.getTetrominoByName(nextTetrominoName));
     updateGhost();
 }
 

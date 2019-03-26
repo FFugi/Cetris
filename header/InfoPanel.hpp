@@ -26,16 +26,20 @@ public:
 
     void setFont(const sf::Font &font);
 
+    void setTetromino(const Tetromino &value);
+
     void update() override;
 
 private:
     sf::Text scoreText;
     sf::Text linesText;
     sf::Text levelText;
+    sf::Text nextText;
     sf::RectangleShape background;
     int outlineThickness;
     int numberBuffer;
     std::shared_ptr<GameProperties> observedProps;
+    Tetromino tetromino;
 
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 };

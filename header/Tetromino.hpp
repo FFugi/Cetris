@@ -10,8 +10,9 @@
 
 class Tetromino : public sf::Drawable, public sf::Transformable {
 public:
-    Tetromino(unsigned tileSize = 30) : coord({0, 0}), tileSize(tileSize),
-                                    isRotatable(true), outlineThickness(6) {
+    explicit Tetromino(unsigned tileSize = 30) : offset({0, 0}), coord({0, 0}),
+                                                 tileSize(tileSize),
+                                                 isRotatable(true), outlineThickness(6) {
         tiles.push_back({0, 0});
     }
 
@@ -20,6 +21,8 @@ public:
     void setTileSize(unsigned size);
 
     void setOutlineThickness(unsigned thickness);
+
+    void setOffset(std::pair<float, float> value);
 
     void doStep();
 
@@ -33,13 +36,19 @@ public:
 
     void updateTilePos(sf::RectangleShape &tile, Coord offset) const;
 
+    void setName(std::string &value);
+
+    std::string &getName();
+
     Coord getCoord();
 
     const std::vector<Coord> getTileCoords();
 
 private:
+    std::pair<float, float> offset;
     Coord coord;
     std::vector<Coord> tiles;
+    std::string name;
     unsigned tileSize;
     bool isRotatable;
     int outlineThickness;
