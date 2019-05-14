@@ -212,7 +212,7 @@ void Game::endGame() {
     stopPanel.setContentText("Your score:\n\n" + std::to_string(props->getScore()) + "\n\nR -> Restart");
 }
 
-Game::Game() : width(10), height(20), props(new GameProperties(0, 0, 1)),
+Game::Game(std::string path) : width(10), height(20), props(new GameProperties(0, 0, 1)),
                isStopped(false), board(width, height), tetromino(30),
                stepManager(new StepManager(800, props)), infoPanel(new InfoPanel(props)) {
     props->addObserver(stepManager);
@@ -227,7 +227,8 @@ Game::Game() : width(10), height(20), props(new GameProperties(0, 0, 1)),
     window.create(sf::VideoMode(winWidth, winHeight), "Cetris", sf::Style::Close);
     assignTetrominosToGenerator();
     board.setTileSize(tileSize);
-    if (!font.loadFromFile("../Fleftex_M.ttf")) {
+    path.append("/../Fleftex_M.ttf");
+    if (!font.loadFromFile(path)) {
         std::cerr << "Couldn't load font file Fleftex_M.ttf!" << std::endl;
         exit(1);
     }

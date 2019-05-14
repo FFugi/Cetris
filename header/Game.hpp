@@ -21,7 +21,7 @@
  */
 class Game {
 public:
-    Game();
+    explicit Game(std::string path);
 
     /**
      * Runs the game until it's finished

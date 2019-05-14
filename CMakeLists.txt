@@ -11,5 +11,5 @@ file(GLOB_RECURSE SRC "src/*.cpp")
 
 add_executable(cetris ${SRC})
 
-target_link_libraries(cetris sfml-graphics sfml-audio)
+target_link_libraries(cetris sfml-graphics sfml-audio stdc++fs)
 
