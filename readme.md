@@ -6,7 +6,9 @@ Clone of Tetris game, written in C++, using SFML 2.5 library.
 
 **On Linux**
 
-Requirements: SFML 2.5
+Requirements:
+* SFML 2.5
+* CMake 3.1
 
 ```bash
 mkdir build
